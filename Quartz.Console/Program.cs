@@ -15,8 +15,6 @@ namespace Quartz.Console
         {
             LogProvider.SetCurrentLogProvider(new ConsoleLogProvider());
             RunProgramRunExample().GetAwaiter().GetResult();
-            System.Console.WriteLine("Press any key to close the application");
-            System.Console.ReadKey();
         }
 
         public static async Task RunProgramRunExample()
