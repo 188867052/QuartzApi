@@ -9,7 +9,7 @@ namespace Quartz.Console
         {
             return (level, func, exception, parameters) =>
             {
-                if (/*level >= LogLevel.Info &&*/ func != null)
+                if (level >= LogLevel.Info && func != null)
                 {
                     System.Console.WriteLine("[" + DateTime.Now.ToLongTimeString() + "] [" + level + "] " + func(), parameters);
                 }

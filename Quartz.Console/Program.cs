@@ -23,23 +23,15 @@ namespace Quartz.Console
         {
             try
             {
-                // Grab the Scheduler instance from the Factory
-                NameValueCollection props = new NameValueCollection
-                {
-                    { "quartz.serializer.type", "binary" }
-                };
-                StdSchedulerFactory factory = new StdSchedulerFactory(props);
+                StdSchedulerFactory factory = new StdSchedulerFactory(Properties);
                 IScheduler scheduler = await factory.GetScheduler();
 
                 // and start it off
                 await scheduler.Start();
 
-                // define the job and tie it to our HelloJob class
                 IJobDetail job = JobBuilder.Create<HelloJob>()
                     .WithIdentity("job1", "group1")
                     .Build();
-
-                // Trigger the job to run now, and then repeat every 10 seconds
                 ITrigger trigger = TriggerBuilder.Create()
                     .WithIdentity("trigger1", "group1")
                     .StartNow()
@@ -47,9 +39,19 @@ namespace Quartz.Console
                         .WithIntervalInSeconds(1)
                         .RepeatForever())
                     .Build();
-
-                // Tell quartz to schedule the job using our trigger
                 await scheduler.ScheduleJob(job, trigger);
+
+                ITrigger trigger2 = TriggerBuilder.Create()
+                  .WithIdentity("trigger2", "group2")
+                  .StartNow()
+                  .WithSimpleSchedule(x => x
+                      .WithIntervalInSeconds(1)
+                      .RepeatForever())
+                  .Build();
+                IJobDetail job2 = JobBuilder.Create<ServerJob>()
+                  .WithIdentity("job2", "group2")
+                  .Build();
+                await scheduler.ScheduleJob(job2, trigger2);
 
                 // some sleep to show what's happening
                 await Task.Delay(TimeSpan.FromSeconds(60));
@@ -60,6 +62,31 @@ namespace Quartz.Console
             catch (SchedulerException se)
             {
                 System.Console.WriteLine(se);
+            }
+        }
+
+        public static NameValueCollection Properties
+        {
+            get
+            {
+                var properties = new NameValueCollection();
+                //SQLServer版本
+                properties.Add("quartz.dataSource.Quartz.provider", "SqlServer");
+                properties.Add("quartz.serializer.type", "json");
+                //表名前缀(可有可无)
+                properties.Add("quartz.jobStore.tablePrefix", "QRTZ_");
+                //数据库连接字符串
+                properties.Add("quartz.dataSource.Quartz.connectionString", "Data Source=.;Initial Catalog=quartz;Integrated Security=True");
+                //properties.Add("quartz.dataSource.myDS.connectionString", "Server =.;Database = quartz;Trusted_Connection =True;"); 
+                //JobStore设置（JobStoreTX: 带有事务；JobStoreCMT：不带有事务）
+                //存储类型
+                properties.Add("quartz.jobStore.type", "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz");
+                //数据源名称
+                properties.Add("quartz.jobStore.dataSource", "Quartz");
+                //驱动类型
+                properties.Add("quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.StdAdoDelegate, Quartz");
+
+                return properties;
             }
         }
     }
