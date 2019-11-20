@@ -1,6 +1,4 @@
-﻿using log4net;
-using Quartz;
-using Quartz.Console.Jobs;
+﻿using Quartz.Console.Jobs;
 using Quartz.Impl;
 using Quartz.Logging;
 using System;
