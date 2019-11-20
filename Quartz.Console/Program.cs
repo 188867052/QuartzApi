@@ -61,11 +61,7 @@ namespace Quartz.Console
             }
         }
 
-        public static NameValueCollection Properties
-        {
-            get
-            {
-                var properties = new NameValueCollection
+        public static NameValueCollection Properties => new NameValueCollection
                 {
                     { "quartz.dataSource.Quartz.provider", "SqlServer" },
                     { "quartz.serializer.type", "json" },
@@ -75,9 +71,5 @@ namespace Quartz.Console
                     { "quartz.jobStore.dataSource", "Quartz" },
                     { "quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.StdAdoDelegate, Quartz" }
                 };
-
-                return properties;
-            }
-        }
     }
 }
