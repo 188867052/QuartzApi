@@ -67,22 +67,16 @@ namespace Quartz.Console
         {
             get
             {
-                var properties = new NameValueCollection();
-                //SQLServer版本
-                properties.Add("quartz.dataSource.Quartz.provider", "SqlServer");
-                properties.Add("quartz.serializer.type", "json");
-                //表名前缀(可有可无)
-                properties.Add("quartz.jobStore.tablePrefix", "QRTZ_");
-                //数据库连接字符串
-                properties.Add("quartz.dataSource.Quartz.connectionString", "Data Source=.;Initial Catalog=quartz;Integrated Security=True");
-                //properties.Add("quartz.dataSource.myDS.connectionString", "Server =.;Database = quartz;Trusted_Connection =True;"); 
-                //JobStore设置（JobStoreTX: 带有事务；JobStoreCMT：不带有事务）
-                //存储类型
-                properties.Add("quartz.jobStore.type", "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz");
-                //数据源名称
-                properties.Add("quartz.jobStore.dataSource", "Quartz");
-                //驱动类型
-                properties.Add("quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.StdAdoDelegate, Quartz");
+                var properties = new NameValueCollection
+                {
+                    { "quartz.dataSource.Quartz.provider", "SqlServer" },
+                    { "quartz.serializer.type", "json" },
+                    { "quartz.jobStore.tablePrefix", "QRTZ_" },
+                    { "quartz.dataSource.Quartz.connectionString", "Data Source=.;Initial Catalog=quartz;Integrated Security=True" },
+                    { "quartz.jobStore.type", "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz" },
+                    { "quartz.jobStore.dataSource", "Quartz" },
+                    { "quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.StdAdoDelegate, Quartz" }
+                };
 
                 return properties;
             }
