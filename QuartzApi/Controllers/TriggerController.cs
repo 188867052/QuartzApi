@@ -29,6 +29,7 @@ namespace QuartzApi.Controllers
         [HttpGet]
         public TriggerInfo GetByKey(string name, string group)
         {
+            var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJJZCI6IjEiLCJMb2dpbk5hbWUiOiIxIiwiUGFzc3dvcmQiOiIxIiwiSXNFbmFibGUiOiJUcnVlIiwibmJmIjoxNTc0MjIzNzQwLCJleHAiOjE1NzQ4Mjg1MzgsImlhdCI6MTU3NDIyMzc0MH0.0D8QPjd3xp0EvUPzn6pFmPeurvwC8Vwjo9sW96NhoBI";
             var trigger = dbContext.QrtzTriggers.FirstOrDefault(o => o.TriggerName == name && o.JobGroup == group);
 
             return trigger == null ? null : new TriggerInfo(trigger);
