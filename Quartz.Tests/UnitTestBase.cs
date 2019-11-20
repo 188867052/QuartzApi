@@ -30,7 +30,7 @@ namespace Quartz.Tests
                     user = new User()
                     {
                         LoginName = nameof(User.LoginName),
-                        Password = Helper.Encrypt(nameof(User.Password)),
+                        Password = nameof(User.Password),
                         CreateTime = DateTime.Now,
                         UpdateTime = DateTime.Now,
                         IsDeleted = false,
@@ -41,9 +41,8 @@ namespace Quartz.Tests
 
                 dbContext.SaveChanges();
 
-                var password = Helper.Decrypt(user.Password);
                 var client = new HttpClient() { BaseAddress = uri };
-                var res = client.GetAsync($"/api/Auth/SignIn?username={user.LoginName}&password={password}");
+                var res = client.GetAsync($"/api/Auth/SignIn?username={user.LoginName}&password={user.Password}");
                 var json = res.Result.Content.ReadAsStringAsync().Result;
                 var t = JsonConvert.DeserializeObject<dynamic>(json).token;
                 Assert.Equal(HttpStatusCode.OK, res.Result.StatusCode);

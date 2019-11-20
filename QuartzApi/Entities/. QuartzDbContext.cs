@@ -2,16 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Quartz.Api;
 
 namespace Entities
 {
-    public partial class QuartzDbContext : DbContext
+    public partial class  QuartzDbContext : DbContext
     {
-        public QuartzDbContext()
+        public  QuartzDbContext()
         {
         }
 
-        public QuartzDbContext(DbContextOptions<QuartzDbContext> options)
+        public  QuartzDbContext(DbContextOptions< QuartzDbContext> options)
             : base(options)
         {
         }
@@ -493,6 +494,7 @@ namespace Entities
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Password)
+                    .HasConversion(new ValueConverter<string, string>(o => Helper.Encrypt(o), o => Helper.Decrypt(o)))
                     .IsRequired()
                     .HasMaxLength(50);
 

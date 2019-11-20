@@ -106,7 +106,7 @@
     <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
     <property Name="LoginName" Column="LoginName" />
     <property Name="DisplayName" Column="DisplayName" />
-    <property Name="Password" Column="Password" />
+    <property Name="Password" Column="Password" Converter="PasswordConverter" />
     <property Name="IsLocked" Column="IsLocked" />
     <property Name="CreateTime" Column="CreateTime" />
     <property Name="UpdateTime" Column="UpdateTime" />

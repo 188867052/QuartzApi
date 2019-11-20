@@ -31,5 +31,10 @@
         /// Uri to string converter.
         /// </summary>
         UriToString,
+
+        /// <summary>
+        /// Password converter.
+        /// </summary>
+        PasswordConverter,
     }
 }

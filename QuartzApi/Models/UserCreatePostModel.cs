@@ -21,7 +21,7 @@ namespace Quartz.Api.Models
             return new User
             {
                 LoginName = LoginName,
-                Password = Helper.Encrypt(Password),
+                Password = Password,
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now,
                 IsDeleted = false,

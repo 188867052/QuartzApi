@@ -70,6 +70,9 @@
                     case ValueConverterEnum.UriToString:
                         line.Add($@".HasConversion(new UriToStringConverter())");
                         break;
+                    case ValueConverterEnum.PasswordConverter:
+                        line.Add($@".HasConversion(new ValueConverter<string, string>(o => Helper.Encrypt(o), o => Helper.Decrypt(o)))");
+                        break;
                     case ValueConverterEnum.None:
                         break;
                     default:
