@@ -1,5 +1,7 @@
 ﻿using EFCore.Scaffolding.Extension;
 using Entities;
+using JWT.Algorithms;
+using JWT.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -7,10 +9,10 @@ using Quartz.Api.Models;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace QuartzApi.Controllers
 {
+    //https://github.com/jwt-dotnet/jwt
     /// <summary>
     /// 权限控制.
     /// </summary>
@@ -66,6 +68,7 @@ namespace QuartzApi.Controllers
                     new Claim(nameof(Entities.User.Password), user.Password),
                     new Claim(nameof(Entities.User.IsEnable),  user.IsEnable.ToString()),
                 });
+              
 
                 return this.Ok(new
                 {
