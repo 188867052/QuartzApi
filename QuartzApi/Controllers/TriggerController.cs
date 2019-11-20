@@ -17,12 +17,10 @@ namespace QuartzApi.Controllers
     public class TriggerController : ControllerBase
     {
         private readonly QuartzDbContext dbContext;
-        private readonly SignInManager<User> signInManager;
 
-        public TriggerController(QuartzDbContext dbContext, SignInManager<User> signInManager)
+        public TriggerController(QuartzDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.signInManager = signInManager;
         }
 
         /// <summary>

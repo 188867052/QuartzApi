@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using EFCore.Scaffolding.Extension;
 using Entities;
 using Microsoft.AspNetCore.Builder;
@@ -51,7 +48,6 @@ namespace QuartzApi
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
                 var xmlPath = Path.Combine(basePath, "QuartzApi.xml");
                 c.IncludeXmlComments(xmlPath);
-
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {

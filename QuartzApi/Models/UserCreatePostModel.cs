@@ -1,5 +1,6 @@
 ﻿using System;
 using Entities;
+using QuartzApi.Controllers;
 
 namespace Quartz.Api.Models
 {
@@ -20,7 +21,7 @@ namespace Quartz.Api.Models
             return new User
             {
                 LoginName = LoginName,
-                Password = Password,
+                Password = Helper.Encrypt(Password),
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now,
                 IsDeleted = false,

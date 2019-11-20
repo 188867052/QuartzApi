@@ -17,12 +17,6 @@
             <param name="password">password.</param>
             <returns></returns>
         </member>
-        <member name="M:QuartzApi.Controllers.AuthController.SignOut">
-            <summary>
-            SignOut
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:QuartzApi.Controllers.AuthController.Create(Quartz.Api.Models.UserCreatePostModel)">
             <summary>
             创建用户.
