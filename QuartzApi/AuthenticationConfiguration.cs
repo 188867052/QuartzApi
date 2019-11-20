@@ -9,15 +9,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace QuartzApi.Controllers
+namespace Quartz.Api
 {
     public static class AuthenticationConfiguration
     {
         public static void AddService(IServiceCollection services, IConfiguration Configuration)
         {
             var appSettingsSection = Configuration.GetSection("AppSettings");
-            var appSettings = appSettingsSection.Get<AppAuthenticationSettings>();
-            services.Configure<AppAuthenticationSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AuthenticationSettings>();
+            services.Configure<AuthenticationSettings>(appSettingsSection);
             services.AddJwtBearerAuthentication(appSettings);
         }
 
@@ -31,7 +31,7 @@ namespace QuartzApi.Controllers
         /// </summary>
         /// <param name="services"></param>
         /// <param name="appSettings">JWT授权的配置项</param>
-        public static void AddJwtBearerAuthentication(this IServiceCollection services, AppAuthenticationSettings appSettings)
+        public static void AddJwtBearerAuthentication(this IServiceCollection services, AuthenticationSettings appSettings)
         {
             //使用应用密钥得到一个加密密钥字节数组
             byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -55,7 +55,7 @@ namespace QuartzApi.Controllers
             });
         }
 
-        public static string GetJwtAccessToken(AppAuthenticationSettings appSettings, ClaimsIdentity claimsIdentity)
+        public static string GetJwtAccessToken(AuthenticationSettings appSettings, ClaimsIdentity claimsIdentity)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);

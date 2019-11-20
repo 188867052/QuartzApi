@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Quartz.Api
+namespace Entities
 {
     public static class Helper
     {

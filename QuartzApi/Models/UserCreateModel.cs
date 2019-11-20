@@ -1,10 +1,9 @@
 ﻿using System;
 using Entities;
-using QuartzApi.Controllers;
 
 namespace Quartz.Api.Models
 {
-    public class UserCreatePostModel
+    public class UserCreateModel
     {
         /// <summary>
         /// 用户名

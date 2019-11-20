@@ -3,7 +3,7 @@
     /// <summary>
     /// JWT授权的配置项
     /// </summary>
-    public class AppAuthenticationSettings
+    public class AuthenticationSettings
     {
         /// <summary>
         /// 应用ID

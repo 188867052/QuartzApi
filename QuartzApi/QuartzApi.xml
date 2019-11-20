@@ -4,105 +4,26 @@
         <name>Quartz.Api</name>
     </assembly>
     <members>
-        <member name="T:QuartzApi.Controllers.AuthController">
-            <summary>
-            权限控制.
-            </summary>
-        </member>
-        <member name="M:QuartzApi.Controllers.AuthController.SignIn(System.String,System.String)">
-            <summary>
-            登陆并返回token.
-            </summary>
-            <param name="username">username.</param>
-            <param name="password">password.</param>
-            <returns></returns>
-        </member>
-        <member name="M:QuartzApi.Controllers.AuthController.Create(Quartz.Api.Models.UserCreatePostModel)">
-            <summary>
-            创建用户.
-            </summary>
-            <param name="model">用户视图实体.</param>
-            <returns>IActionResult.</returns>
-        </member>
-        <member name="T:QuartzApi.Controllers.TriggerController">
-            <summary>
-            触发器.
-            </summary>
-        </member>
-        <member name="M:QuartzApi.Controllers.TriggerController.GetByKey(System.String,System.String)">
-            <summary>
-            根据 TriggerName 和 JobGroup 获取.
-            </summary>
-            <param name="name">TriggerName</param>
-            <param name="group">JobGroup</param>
-            <returns></returns>
-        </member>
-        <member name="M:QuartzApi.Controllers.TriggerController.GetAll">
-            <summary>
-            获取所有 Trigger 信息.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:QuartzApi.Controllers.AuthenticationConfiguration.AddJwtBearerAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection,Quartz.Api.Models.AppAuthenticationSettings)">
+        <member name="M:Quartz.Api.AuthenticationConfiguration.AddJwtBearerAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection,Quartz.Api.Models.AuthenticationSettings)">
             <summary>
             注册JWT Bearer认证服务的静态扩展方法
             </summary>
             <param name="services"></param>
             <param name="appSettings">JWT授权的配置项</param>
         </member>
-        <member name="T:Quartz.Api.Models.AppAuthenticationSettings">
+        <member name="T:Quartz.Api.Models.AuthenticationSettings">
             <summary>
             JWT授权的配置项
             </summary>
         </member>
-        <member name="P:Quartz.Api.Models.AppAuthenticationSettings.AppId">
+        <member name="P:Quartz.Api.Models.AuthenticationSettings.AppId">
             <summary>
             应用ID
             </summary>
         </member>
-        <member name="P:Quartz.Api.Models.AppAuthenticationSettings.Secret">
+        <member name="P:Quartz.Api.Models.AuthenticationSettings.Secret">
             <summary>
             应用密钥(真实项目中可能区分应用,不同的应用对应惟一的密钥)
-            </summary>
-        </member>
-        <member name="T:Quartz.Api.Models.HttpReponseCode">
-            <summary>
-            表示 ajax 操作结果类型的枚举
-            </summary>
-        </member>
-        <member name="F:Quartz.Api.Models.HttpReponseCode.Info">
-            <summary>
-            消息结果类型
-            </summary>
-        </member>
-        <member name="F:Quartz.Api.Models.HttpReponseCode.Success">
-            <summary>
-            成功结果类型
-            </summary>
-        </member>
-        <member name="F:Quartz.Api.Models.HttpReponseCode.Error">
-            <summary>
-            异常结果类型
-            </summary>
-        </member>
-        <member name="F:Quartz.Api.Models.HttpReponseCode.UnAuth">
-            <summary>
-            用户未登录
-            </summary>
-        </member>
-        <member name="F:Quartz.Api.Models.HttpReponseCode.Forbidden">
-            <summary>
-            已登录，但权限不足
-            </summary>
-        </member>
-        <member name="F:Quartz.Api.Models.HttpReponseCode.NoFound">
-            <summary>
-            资源未找到
-            </summary>
-        </member>
-        <member name="F:Quartz.Api.Models.HttpReponseCode.Locked">
-            <summary>
-            资源被锁定
             </summary>
         </member>
         <member name="T:Quartz.Api.Models.HttpReponseModel">
@@ -115,12 +36,12 @@
             初始化一个<see cref="T:Quartz.Api.Models.HttpReponseModel"/>类型的新实例
             </summary>
         </member>
-        <member name="M:Quartz.Api.Models.HttpReponseModel.#ctor(System.String,Quartz.Api.Models.HttpReponseCode,System.Object)">
+        <member name="M:Quartz.Api.Models.HttpReponseModel.#ctor(System.String,System.Net.HttpStatusCode,System.Object)">
             <summary>
             初始化一个<see cref="T:Quartz.Api.Models.HttpReponseModel"/>类型的新实例
             </summary>
         </member>
-        <member name="M:Quartz.Api.Models.HttpReponseModel.#ctor(System.String,System.Object,Quartz.Api.Models.HttpReponseCode)">
+        <member name="M:Quartz.Api.Models.HttpReponseModel.#ctor(System.String,System.Object,System.Net.HttpStatusCode)">
             <summary>
             初始化一个<see cref="T:Quartz.Api.Models.HttpReponseModel"/>类型的新实例
             </summary>
@@ -148,76 +69,6 @@
         <member name="M:Quartz.Api.Models.HttpReponseModel.Success(System.Object)">
             <summary>
             成功的AjaxResult
-            </summary>
-        </member>
-        <member name="T:Quartz.Api.Models.LoginDto">
-            <summary>
-            登录信息DTO
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.LoginDto.Account">
-            <summary>
-            获取或设置 登录账号，可以是用户名，Email，手机号等
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.LoginDto.Password">
-            <summary>
-            获取或设置 登录密码
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.LoginDto.VerifyCode">
-            <summary>
-            获取或设置 验证码
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.LoginDto.Remember">
-            <summary>
-            获取或设置 记住登录
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.LoginDto.Ip">
-            <summary>
-            获取或设置 IP地址
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.LoginDto.UserAgent">
-            <summary>
-            获取或设置 客户端代理头
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.LoginDto.ReturnUrl">
-            <summary>
-            获取或设置 回调地址
-            </summary>
-        </member>
-        <member name="T:Quartz.Api.Models.TokenDto">
-            <summary>
-            Token请求DTO
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.TokenDto.GrantType">
-            <summary>
-            获取或设置 授权类型
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.TokenDto.Account">
-            <summary>
-            获取或设置 账户名
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.TokenDto.Password">
-            <summary>
-            获取或设置 密码
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.TokenDto.VerifyCode">
-            <summary>
-            获取或设置 验证码
-            </summary>
-        </member>
-        <member name="P:Quartz.Api.Models.TokenDto.RefreshToken">
-            <summary>
-            获取或设置 刷新Token
             </summary>
         </member>
         <member name="T:Quartz.Api.Models.TriggerInfo">
@@ -280,15 +131,54 @@
             结束时间
             </summary>
         </member>
-        <member name="P:Quartz.Api.Models.UserCreatePostModel.LoginName">
+        <member name="P:Quartz.Api.Models.UserCreateModel.LoginName">
             <summary>
             用户名
             </summary>
         </member>
-        <member name="P:Quartz.Api.Models.UserCreatePostModel.Password">
+        <member name="P:Quartz.Api.Models.UserCreateModel.Password">
             <summary>
             密码
             </summary>
+        </member>
+        <member name="T:QuartzApi.Controllers.AuthController">
+            <summary>
+            权限控制.
+            </summary>
+        </member>
+        <member name="M:QuartzApi.Controllers.AuthController.SignIn(System.String,System.String)">
+            <summary>
+            登陆并返回token.
+            </summary>
+            <param name="username">username.</param>
+            <param name="password">password.</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuartzApi.Controllers.AuthController.Create(Quartz.Api.Models.UserCreateModel)">
+            <summary>
+            创建用户.
+            </summary>
+            <param name="model">用户视图实体.</param>
+            <returns>IActionResult.</returns>
+        </member>
+        <member name="T:QuartzApi.Controllers.TriggerController">
+            <summary>
+            触发器.
+            </summary>
+        </member>
+        <member name="M:QuartzApi.Controllers.TriggerController.GetByKey(System.String,System.String)">
+            <summary>
+            根据 TriggerName 和 JobGroup 获取.
+            </summary>
+            <param name="name">TriggerName</param>
+            <param name="group">JobGroup</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuartzApi.Controllers.TriggerController.GetAll">
+            <summary>
+            获取所有 Trigger 信息.
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

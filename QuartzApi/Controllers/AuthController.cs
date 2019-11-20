@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Nancy.Json;
+using Quartz.Api;
 using Quartz.Api.Models;
 using System.Buffers.Text;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace QuartzApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly QuartzDbContext dbContext;
-        private readonly AppAuthenticationSettings appSettings;
+        private readonly AuthenticationSettings appSettings;
 
-        public AuthController(QuartzDbContext dbContext, IOptions<AppAuthenticationSettings> appSettings)
+        public AuthController(QuartzDbContext dbContext, IOptions<AuthenticationSettings> appSettings)
         {
             this.dbContext = dbContext;
             this.appSettings = appSettings.Value;
@@ -83,7 +84,7 @@ namespace QuartzApi.Controllers
         /// <param name="model">用户视图实体.</param>
         /// <returns>IActionResult.</returns>
         [HttpPost]
-        public JsonResult Create(UserCreatePostModel model)
+        public JsonResult Create(UserCreateModel model)
         {
             if (model.LoginName.Length == 0)
             {
