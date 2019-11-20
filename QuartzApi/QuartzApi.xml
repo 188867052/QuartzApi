@@ -158,8 +158,8 @@
             <summary>
             创建用户.
             </summary>
-            <param name="model">用户视图实体.</param>
-            <returns>IActionResult.</returns>
+            <param name="model">model.</param>
+            <returns>JsonResult.</returns>
         </member>
         <member name="T:QuartzApi.Controllers.TriggerController">
             <summary>

@@ -1,6 +1,5 @@
 ﻿using Entities;
 using Newtonsoft.Json;
-using QuartzApi.Controllers;
 using System;
 using System.Linq;
 using System.Net;

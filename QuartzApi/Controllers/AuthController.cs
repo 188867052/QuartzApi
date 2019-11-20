@@ -1,12 +1,8 @@
 ﻿using Entities;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Nancy.Json;
 using Quartz.Api;
 using Quartz.Api.Models;
-using System.Buffers.Text;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -81,8 +77,8 @@ namespace QuartzApi.Controllers
         /// <summary>
         /// 创建用户.
         /// </summary>
-        /// <param name="model">用户视图实体.</param>
-        /// <returns>IActionResult.</returns>
+        /// <param name="model">model.</param>
+        /// <returns>JsonResult.</returns>
         [HttpPost]
         public JsonResult Create(UserCreateModel model)
         {

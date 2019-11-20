@@ -2,7 +2,6 @@
 using System.Linq;
 using Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Quartz.Api.Models;
 
