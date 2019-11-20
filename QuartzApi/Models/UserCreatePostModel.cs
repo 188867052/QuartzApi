@@ -1,7 +1,7 @@
 ﻿using System;
 using Entities;
 
-namespace QuartzApi.Controllers
+namespace Quartz.Api.Models
 {
     public class UserCreatePostModel
     {

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Entities;
-using JWT.Builder;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Quartz.Api.Models;
 
 namespace QuartzApi.Controllers
@@ -18,12 +17,12 @@ namespace QuartzApi.Controllers
     public class TriggerController : ControllerBase
     {
         private readonly QuartzDbContext dbContext;
-        private readonly IConfiguration configuration;
+        private readonly SignInManager<User> signInManager;
 
-        public TriggerController(QuartzDbContext dbContext, IConfiguration Configuration)
+        public TriggerController(QuartzDbContext dbContext, SignInManager<User> signInManager)
         {
             this.dbContext = dbContext;
-            configuration = Configuration;
+            this.signInManager = signInManager;
         }
 
         /// <summary>
@@ -33,20 +32,15 @@ namespace QuartzApi.Controllers
         /// <param name="group">JobGroup</param>
         /// <returns></returns>
         [HttpGet]
-        public TriggerInfo GetByKey(string name, string group)
+        public HttpReponseModel GetByKey(string name, string group)
         {
-            var appSettingsSection = configuration.GetSection("AppSettings");
-            var appSettings = appSettingsSection.Get<AppAuthenticationSettings>();
-
-            var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJJZCI6IjEiLCJMb2dpbk5hbWUiOiIxIiwiUGFzc3dvcmQiOiIxIiwiSXNFbmFibGUiOiJUcnVlIiwibmJmIjoxNTc0MjIzNzQwLCJleHAiOjE1NzQ4Mjg1MzgsImlhdCI6MTU3NDIyMzc0MH0.0D8QPjd3xp0EvUPzn6pFmPeurvwC8Vwjo9sW96NhoBI";
-            var json = new JwtBuilder()
-            .WithSecret(appSettings.Secret)
-            .MustVerifySignature()
-            .Decode(token);
-
             var trigger = dbContext.QrtzTriggers.FirstOrDefault(o => o.TriggerName == name && o.JobGroup == group);
+            if (trigger == null)
+            {
+                return new HttpReponseModel() { Message = "Trigger不存在" };
+            }
 
-            return trigger == null ? null : new TriggerInfo(trigger);
+            return HttpReponseModel.Success(new TriggerInfo(trigger));
         }
 
         /// <summary>
@@ -54,7 +48,7 @@ namespace QuartzApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<TriggerInfo> GetAll()
+        public HttpReponseModel GetAll()
         {
             var triggers = dbContext.QrtzTriggers.ToList();
             var list = new List<TriggerInfo>();
@@ -62,7 +56,8 @@ namespace QuartzApi.Controllers
             {
                 list.Add(new TriggerInfo(trigger));
             }
-            return list;
+
+            return HttpReponseModel.Success(list);
         }
     }
 }

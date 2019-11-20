@@ -3,7 +3,7 @@
     /// <summary>
     /// 表示 ajax 操作结果类型的枚举
     /// </summary>
-    public enum AjaxResultType
+    public enum HttpReponseCode
     {
         /// <summary>
         /// 消息结果类型

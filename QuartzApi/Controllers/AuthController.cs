@@ -1,7 +1,7 @@
-﻿using EFCore.Scaffolding.Extension;
-using Entities;
-using JWT.Algorithms;
-using JWT.Builder;
+﻿using Entities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -9,33 +9,34 @@ using Quartz.Api.Models;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace QuartzApi.Controllers
 {
-    //https://github.com/jwt-dotnet/jwt
     /// <summary>
     /// 权限控制.
     /// </summary>
     [Route("api/[controller]/[Action]")]
-    public class IdentityController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly QuartzDbContext dbContext;
         private readonly AppAuthenticationSettings appSettings;
+        private readonly SignInManager<User> _signInManager;
 
-        public IdentityController(QuartzDbContext dbContext, IOptions<AppAuthenticationSettings> appSettings)
+        public AuthController(QuartzDbContext dbContext, IOptions<AppAuthenticationSettings> appSettings)
         {
             this.dbContext = dbContext;
             this.appSettings = appSettings.Value;
         }
 
         /// <summary>
-        /// Auth.
+        /// 登陆并返回token.
         /// </summary>
         /// <param name="username">username.</param>
         /// <param name="password">password.</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Auth(string username, string password)
+        public IActionResult SignIn(string username, string password)
         {
             using (this.dbContext)
             {
@@ -68,15 +69,28 @@ namespace QuartzApi.Controllers
                     new Claim(nameof(Entities.User.Password), user.Password),
                     new Claim(nameof(Entities.User.IsEnable),  user.IsEnable.ToString()),
                 });
-              
+
 
                 return this.Ok(new
                 {
                     token = AuthenticationConfiguration.GetJwtAccessToken(appSettings, claimsIdentity),
                     code = (int)HttpStatusCode.OK,
-                    message = "OperateSuccess",
+                    message = "成功",
                 });
             }
+        }
+
+        /// <summary>
+        /// SignOut
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync();
+            await _signInManager.SignOutAsync();
+            return Ok();
         }
 
         /// <summary>

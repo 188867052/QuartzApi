@@ -40,6 +40,7 @@ namespace QuartzApi
                     {
                         options.UseSqlServer(Connection.ConnectionString, b => b.UseRowNumberForPaging());
                     });
+            services.AddCors(options => { options.AddPolicy("stdio", p => p.AllowAnyOrigin()); });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -83,9 +84,10 @@ namespace QuartzApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("stdio");
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseSwagger();
@@ -94,7 +96,6 @@ namespace QuartzApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

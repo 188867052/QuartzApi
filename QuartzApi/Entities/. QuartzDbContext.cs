@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities
 {
-    public partial class  QuartzDbContext : DbContext
+    public partial class QuartzDbContext : DbContext
     {
-        public  QuartzDbContext()
+        public QuartzDbContext()
         {
         }
 
-        public  QuartzDbContext(DbContextOptions< QuartzDbContext> options)
+        public QuartzDbContext(DbContextOptions<QuartzDbContext> options)
             : base(options)
         {
         }
