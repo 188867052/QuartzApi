@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quartz.Api", "QuartzApi\Qua
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quartz.Console", "Quartz.Console\Quartz.Console.csproj", "{299F7D12-7638-4E6C-BFB9-D540B11DC8C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.CodeGenerator", "EFCore.CodeGenerator\EFCore.CodeGenerator.csproj", "{6BC22E9E-7D90-44D0-BD25-66E3F936AB74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quartz.CodeGenerator", "EFCore.CodeGenerator\Quartz.CodeGenerator.csproj", "{6BC22E9E-7D90-44D0-BD25-66E3F936AB74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -431,7 +431,9 @@ namespace Entities
                     .HasColumnName("DESCRIPTION")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.EndTime).HasColumnName("END_TIME");
+                entity.Property(e => e.EndTime)
+                    .HasConversion(new DateTimeToTicksConverter())
+                    .HasColumnName("END_TIME");
 
                 entity.Property(e => e.JobData).HasColumnName("JOB_DATA");
 
@@ -447,13 +449,19 @@ namespace Entities
 
                 entity.Property(e => e.MisfireInstr).HasColumnName("MISFIRE_INSTR");
 
-                entity.Property(e => e.NextFireTime).HasColumnName("NEXT_FIRE_TIME");
+                entity.Property(e => e.NextFireTime)
+                    .HasConversion(new DateTimeToTicksConverter())
+                    .HasColumnName("NEXT_FIRE_TIME");
 
-                entity.Property(e => e.PrevFireTime).HasColumnName("PREV_FIRE_TIME");
+                entity.Property(e => e.PrevFireTime)
+                    .HasConversion(new DateTimeToTicksConverter())
+                    .HasColumnName("PREV_FIRE_TIME");
 
                 entity.Property(e => e.Priority).HasColumnName("PRIORITY");
 
-                entity.Property(e => e.StartTime).HasColumnName("START_TIME");
+                entity.Property(e => e.StartTime)
+                    .HasConversion(new DateTimeToTicksConverter())
+                    .HasColumnName("START_TIME");
 
                 entity.Property(e => e.TriggerState)
                     .IsRequired()

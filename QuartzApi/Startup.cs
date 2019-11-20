@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EFCore.Scaffolding.Extension;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 
 namespace QuartzApi
@@ -26,7 +28,12 @@ namespace QuartzApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(setupAction =>
+            {
+                setupAction.JsonSerializerOptions.IgnoreNullValues = true;
+                setupAction.JsonSerializerOptions.WriteIndented = true;
+            });
+
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<QuartzDbContext>(options =>
                     {
@@ -34,7 +41,14 @@ namespace QuartzApi
                     });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "My API",
+                    Version = "v1"
+                });
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "QuartzApi.xml");
+                c.IncludeXmlComments(xmlPath);
             });
         }
 

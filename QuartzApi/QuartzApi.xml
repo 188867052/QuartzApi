@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Quartz.Api</name>
+    </assembly>
+    <members>
+        <member name="T:QuartzApi.Controllers.TriggerController">
+            <summary>
+            触发器.
+            </summary>
+        </member>
+        <member name="M:QuartzApi.Controllers.TriggerController.GetByKey(System.String,System.String)">
+            <summary>
+            根据 TriggerName 和 JobGroup 获取.
+            </summary>
+            <param name="name">TriggerName</param>
+            <param name="group">JobGroup</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuartzApi.Controllers.TriggerController.GetAll">
+            <summary>
+            获取所有 Trigger 信息.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Quartz.Api.Models.TriggerInfo">
+            <summary>
+            Trigger Info.
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.TriggerName">
+            <summary>
+            TriggerName.
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.TriggerGroup">
+            <summary>
+            TriggerGroup
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -91,13 +91,13 @@
     <property Name="JobName" Column="JOB_NAME" />
     <property Name="JobGroup" Column="JOB_GROUP" />
     <property Name="Description" Column="DESCRIPTION" />
-    <property Name="NextFireTime" Column="NEXT_FIRE_TIME" />
-    <property Name="PrevFireTime" Column="PREV_FIRE_TIME" />
+    <property Name="NextFireTime" Column="NEXT_FIRE_TIME" Converter="DateTimeToTicks" Type="DateTime?" />
+    <property Name="PrevFireTime" Column="PREV_FIRE_TIME" Converter="DateTimeToTicks" Type="DateTime?" />
     <property Name="Priority" Column="PRIORITY" />
     <property Name="TriggerState" Column="TRIGGER_STATE" />
     <property Name="TriggerType" Column="TRIGGER_TYPE" />
-    <property Name="StartTime" Column="START_TIME" />
-    <property Name="EndTime" Column="END_TIME" />
+    <property Name="StartTime" Column="START_TIME" Converter="DateTimeToTicks" Type="DateTime?" />
+    <property Name="EndTime" Column="END_TIME" Converter="DateTimeToTicks" Type="DateTime?" />
     <property Name="CalendarName" Column="CALENDAR_NAME" />
     <property Name="MisfireInstr" Column="MISFIRE_INSTR" />
     <property Name="JobData" Column="JOB_DATA" />

@@ -1,31 +1,46 @@
 ﻿using Entities;
+using System;
 
 namespace Quartz.Api.Models
 {
+    /// <summary>
+    /// Trigger Info.
+    /// </summary>
     public class TriggerInfo
     {
         public TriggerInfo(QrtzTriggers trigger)
         {
+            SchedName = trigger.SchedName;
             TriggerName = trigger.TriggerName;
             TriggerGroup = trigger.TriggerGroup;
             TriggerState = trigger.TriggerState;
+            Priority = trigger.Priority;
+            PrevFireTime = trigger.PrevFireTime;
+            NextFireTime = trigger.NextFireTime;
+            TriggerType = trigger.TriggerType;
+            StartTime = trigger.StartTime;
+            EndTime = trigger.EndTime;
         }
 
         public string SchedName { get; set; }
 
+        /// <summary>
+        /// TriggerName.
+        /// </summary>
         public string TriggerName { get; set; }
 
+        /// <summary>
+        /// TriggerGroup
+        /// </summary>
         public string TriggerGroup { get; set; }
 
         public string JobName { get; set; }
 
         public string JobGroup { get; set; }
 
-        public string Description { get; set; }
+        public DateTime? NextFireTime { get; set; }
 
-        public long? NextFireTime { get; set; }
-
-        public long? PrevFireTime { get; set; }
+        public DateTime? PrevFireTime { get; set; }
 
         public int? Priority { get; set; }
 
@@ -33,13 +48,8 @@ namespace Quartz.Api.Models
 
         public string TriggerType { get; set; }
 
-        public long StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
-        public long? EndTime { get; set; }
-
-        public string CalendarName { get; set; }
-
-        public int? MisfireInstr { get; set; }
-
+        public DateTime? EndTime { get; set; }
     }
 }

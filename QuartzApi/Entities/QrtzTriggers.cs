@@ -17,9 +17,9 @@ namespace Entities
 
         public string Description { get; set; }
 
-        public long? NextFireTime { get; set; }
+        public DateTime? NextFireTime { get; set; }
 
-        public long? PrevFireTime { get; set; }
+        public DateTime? PrevFireTime { get; set; }
 
         public int? Priority { get; set; }
 
@@ -27,9 +27,9 @@ namespace Entities
 
         public string TriggerType { get; set; }
 
-        public long StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
-        public long? EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         public string CalendarName { get; set; }
 
