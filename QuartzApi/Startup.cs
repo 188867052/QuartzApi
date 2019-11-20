@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EFCore.Scaffolding.Extension;
 using Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,7 +30,7 @@ namespace QuartzApi
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<QuartzDbContext>(options =>
                     {
-                        options.UseSqlServer(Configuration.GetConnectionString("SqlServer"), b => b.UseRowNumberForPaging());
+                        options.UseSqlServer(Connection.ConnectionString, b => b.UseRowNumberForPaging());
                     });
             services.AddSwaggerGen(c =>
             {
