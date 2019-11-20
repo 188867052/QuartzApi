@@ -24,6 +24,13 @@
             <param name="password">password.</param>
             <returns></returns>
         </member>
+        <member name="M:QuartzApi.Controllers.IdentityController.Create(QuartzApi.Controllers.UserCreatePostModel)">
+            <summary>
+            创建用户.
+            </summary>
+            <param name="model">用户视图实体.</param>
+            <returns>IActionResult.</returns>
+        </member>
         <member name="T:QuartzApi.Controllers.TriggerController">
             <summary>
             触发器.
@@ -42,6 +49,16 @@
             获取所有 Trigger 信息.
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:QuartzApi.Controllers.UserCreatePostModel.LoginName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:QuartzApi.Controllers.UserCreatePostModel.Password">
+            <summary>
+            密码
+            </summary>
         </member>
         <member name="T:Quartz.Api.Models.AjaxResult">
             <summary>

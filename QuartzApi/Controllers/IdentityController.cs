@@ -76,6 +76,38 @@ namespace QuartzApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 创建用户.
+        /// </summary>
+        /// <param name="model">用户视图实体.</param>
+        /// <returns>IActionResult.</returns>
+        [HttpPost]
+        public JsonResult Create(UserCreatePostModel model)
+        {
+            if (model.LoginName.Length == 0)
+            {
+                return new JsonResult("用户名不能为空");
+            }
+            if (model.Password.Length == 0)
+            {
+                return new JsonResult("密码不能为空");
+            }
+
+            using (this.dbContext)
+            {
+                if (dbContext.User.Any(x => x.LoginName == model.LoginName))
+                {
+                    return new JsonResult("User is Exist");
+                }
+
+                User entity = model.MapTo();
+                this.dbContext.User.Add(entity);
+                this.dbContext.SaveChanges();
+
+                return new JsonResult("Success");
+            }
+        }
+
         private OkObjectResult FailResponse(string message)
         {
             return this.Ok(new
