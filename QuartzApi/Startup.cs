@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
+using QuartzApi.Controllers;
 
 namespace QuartzApi
 {
@@ -50,6 +51,7 @@ namespace QuartzApi
                 var xmlPath = Path.Combine(basePath, "QuartzApi.xml");
                 c.IncludeXmlComments(xmlPath);
             });
+            AuthenticationConfiguration.AddService(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

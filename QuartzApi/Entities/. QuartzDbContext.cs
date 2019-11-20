@@ -38,6 +38,8 @@ namespace Entities
 
         public virtual DbSet<QrtzTriggers> QrtzTriggers { get; set; }
 
+        public virtual DbSet<User> User { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -478,6 +480,23 @@ namespace Entities
                     .HasForeignKey(d => new { d.SchedName, d.JobName, d.JobGroup })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.DisplayName).HasMaxLength(50);
+
+                entity.Property(e => e.LoginName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);

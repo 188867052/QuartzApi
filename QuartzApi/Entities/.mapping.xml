@@ -102,5 +102,16 @@
     <property Name="MisfireInstr" Column="MISFIRE_INSTR" />
     <property Name="JobData" Column="JOB_DATA" />
   </class>
+  <class Name="User" Table="User" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
+    <property Name="LoginName" Column="LoginName" />
+    <property Name="DisplayName" Column="DisplayName" />
+    <property Name="Password" Column="Password" />
+    <property Name="IsLocked" Column="IsLocked" />
+    <property Name="CreateTime" Column="CreateTime" />
+    <property Name="UpdateTime" Column="UpdateTime" />
+    <property Name="IsEnable" Column="IsEnable" />
+    <property Name="IsDeleted" Column="IsDeleted" />
+  </class>
   <namespace Type="SexEnum">EFCore.Scaffolding.Extension.Entity.Enums</namespace>
 </config>
