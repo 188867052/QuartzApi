@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Quartz.Api.Enums;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities
@@ -37,6 +38,10 @@ namespace Entities
         public virtual DbSet<QrtzSimpropTriggers> QrtzSimpropTriggers { get; set; }
 
         public virtual DbSet<QrtzTriggers> QrtzTriggers { get; set; }
+
+        public virtual DbSet<TaskLogs> TaskLogs { get; set; }
+
+        public virtual DbSet<Tasks> Tasks { get; set; }
 
         public virtual DbSet<User> User { get; set; }
 
@@ -480,6 +485,20 @@ namespace Entities
                     .HasForeignKey(d => new { d.SchedName, d.JobName, d.JobGroup })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS");
+            });
+
+            modelBuilder.Entity<TaskLogs>(entity =>
+            {
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Message).HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<Tasks>(entity =>
+            {
+                entity.Property(e => e.Cmd).HasMaxLength(50);
+
+                entity.Property(e => e.Url).HasMaxLength(50);
             });
 
             modelBuilder.Entity<User>(entity =>

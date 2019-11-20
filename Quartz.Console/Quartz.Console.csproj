@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,8 +7,20 @@
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.SelfHost" Version="5.2.7" />
     <PackageReference Include="Quartz" Version="3.0.7" />
     <PackageReference Include="Quartz.Serialization.Json" Version="3.0.7" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Quartz\Quartz.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ServiceModel">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.ServiceModel.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

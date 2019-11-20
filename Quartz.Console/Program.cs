@@ -3,16 +3,32 @@ using Quartz.Impl;
 using Quartz.Logging;
 using System;
 using System.Collections.Specialized;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.SelfHost;
 
 namespace Quartz.Console
 {
     public class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            LogProvider.SetCurrentLogProvider(new ConsoleLogProvider());
-            RunProgramRunExample().GetAwaiter().GetResult();
+
+            var config = new HttpSelfHostConfiguration("http://localhost:8080");
+
+            //config.Routes.MapHttpRoute(
+            //    "API Default", "api/{controller}/{id}",
+            //    new { id = RouteParameter.Optional });
+
+            //using (HttpSelfHostServer server = new HttpSelfHostServer(config))
+            //{
+            //    server.OpenAsync().Wait();
+            //    System.Console.WriteLine("Press Enter to quit.");
+            //    System.Console.ReadLine();
+            //}
         }
 
         public static async Task RunProgramRunExample()

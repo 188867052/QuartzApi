@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuartzApi\Quartz.Api.csproj" />
+    <ProjectReference Include="..\Quartz\Quartz.csproj" />
   </ItemGroup>
 
 </Project>

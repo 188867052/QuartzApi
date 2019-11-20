@@ -71,6 +71,62 @@
             成功的AjaxResult
             </summary>
         </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.JobName">
+            <summary>
+            任务名称
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.JobGroup">
+            <summary>
+            任务分组
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.BeginTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.Cron">
+            <summary>
+            Cron表达式
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.RunTimes">
+            <summary>
+            执行次数（默认无限循环）
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.IntervalSecond">
+            <summary>
+            执行间隔时间，单位秒（如果有Cron，则IntervalSecond失效）
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.RequestUrl">
+            <summary>
+            请求url
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.RequestParameters">
+            <summary>
+            请求参数（Post，Put请求用）
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.Headers">
+            <summary>
+            Headers(可以包含如：Authorization授权认证)
+            格式：{"Authorization":"userpassword.."}
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.ScheduleEntity.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
         <member name="T:Quartz.Api.Models.TriggerInfo">
             <summary>
             Trigger Info.
@@ -160,6 +216,28 @@
             </summary>
             <param name="model">model.</param>
             <returns>JsonResult.</returns>
+        </member>
+        <member name="T:QuartzApi.Controllers.JobController">
+            <summary>
+            Job.
+            </summary>
+        </member>
+        <member name="M:QuartzApi.Controllers.JobController.AddJob(Quartz.Api.Models.ScheduleEntity)">
+            <summary>
+            添加任务
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuartzApi.Controllers.LogController">
+            <summary>
+            日志.
+            </summary>
+        </member>
+        <member name="T:QuartzApi.Controllers.TaskController">
+            <summary>
+            任务.
+            </summary>
         </member>
         <member name="T:QuartzApi.Controllers.TriggerController">
             <summary>

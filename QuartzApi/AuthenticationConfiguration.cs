@@ -34,7 +34,7 @@ namespace Quartz.Api
         public static void AddJwtBearerAuthentication(this IServiceCollection services, AuthenticationSettings appSettings)
         {
             //使用应用密钥得到一个加密密钥字节数组
-            byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            byte[] key = Encoding.ASCII.GetBytes("0123456789ABCDEF");
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

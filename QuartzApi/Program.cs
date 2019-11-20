@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Hosting.WindowsServices;
 
 namespace QuartzApi
 {
@@ -13,14 +18,29 @@ namespace QuartzApi
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-        }
+            try
+            {
+                var config = new ConfigurationBuilder()
+            .AddCommandLine(args)
+            .AddEnvironmentVariables(prefix: "ASPNETCORE_")
+            .Build();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                var host = new WebHostBuilder()
+                    .UseConfiguration(config)
+                    .UseKestrel()
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseIISIntegration()
+                    .UseStartup<Startup>()
+                    .Build();
+
+                host.Run();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadKey();
+            }
+        }
     }
 }

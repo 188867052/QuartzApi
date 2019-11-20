@@ -102,6 +102,17 @@
     <property Name="MisfireInstr" Column="MISFIRE_INSTR" />
     <property Name="JobData" Column="JOB_DATA" />
   </class>
+  <class Name="TaskLogs" Table="TaskLogs" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
+    <property Name="Message" Column="Message" />
+    <property Name="CreateTime" Column="CreateTime" />
+  </class>
+  <class Name="Tasks" Table="Tasks" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
+    <property Name="Url" Column="Url" />
+    <property Name="Cmd" Column="Cmd" />
+    <property Name="Type" Column="Type" Type="TaskTypeEnum" />
+  </class>
   <class Name="User" Table="User" PrimaryKey="Id">
     <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
     <property Name="LoginName" Column="LoginName" />
@@ -113,5 +124,5 @@
     <property Name="IsEnable" Column="IsEnable" />
     <property Name="IsDeleted" Column="IsDeleted" />
   </class>
-  <namespace Type="SexEnum">EFCore.Scaffolding.Extension.Entity.Enums</namespace>
+  <namespace Type="TaskTypeEnum">Quartz.Api.Enums</namespace>
 </config>
