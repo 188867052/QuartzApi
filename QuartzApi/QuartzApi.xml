@@ -30,12 +30,57 @@
         </member>
         <member name="P:Quartz.Api.Models.TriggerInfo.TriggerName">
             <summary>
-            TriggerName.
+            触发器名称.
             </summary>
         </member>
         <member name="P:Quartz.Api.Models.TriggerInfo.TriggerGroup">
             <summary>
-            TriggerGroup
+            触发器组.
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.JobName">
+            <summary>
+            Job名称
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.JobGroup">
+            <summary>
+            Job组.
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.NextFireTime">
+            <summary>
+            下次触发时间.
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.PrevFireTime">
+            <summary>
+            上次触发时间
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.Priority">
+            <summary>
+            优先级.
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.TriggerState">
+            <summary>
+            触发器状态
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.TriggerType">
+            <summary>
+            触发器类型
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.StartTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:Quartz.Api.Models.TriggerInfo.EndTime">
+            <summary>
+            结束时间
             </summary>
         </member>
     </members>
