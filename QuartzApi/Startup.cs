@@ -5,15 +5,11 @@ using System.Threading.Tasks;
 using Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace QuartzApi
 {
@@ -33,10 +29,7 @@ namespace QuartzApi
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<QuartzDbContext>(options =>
                     {
-                        //读取配置文件中的链接字符串
-                        options.UseSqlServer(Configuration.GetConnectionString("SqlServer"),
-                        //配置分页 使用旧方式
-                            b => b.UseRowNumberForPaging());
+                        options.UseSqlServer(Configuration.GetConnectionString("SqlServer"), b => b.UseRowNumberForPaging());
                     });
             services.AddSwaggerGen(c =>
             {
@@ -56,9 +49,7 @@ namespace QuartzApi
             app.UseRouting();
             app.UseAuthorization();
 
-            //启用中间件服务生成Swagger作为JSON终结点
             app.UseSwagger();
-            //启用中间件服务对swagger-ui，指定Swagger JSON终结点
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
