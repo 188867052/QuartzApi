@@ -7,7 +7,7 @@ namespace EFCore.Scaffolding.Extension
     {
         public static IEnumerable<string> Scaffolding(string @namespace, string contextName, string writeCodePath)
         {
-            DbContextGenerator generator = new DbContextGenerator(@namespace, contextName, writeCodePath);
+            var generator = new DbContextGenerator(@namespace, contextName, writeCodePath);
             generator.WriteTo();
 
             return generator.WriteAllTextModels.Select(o => o.Code);
