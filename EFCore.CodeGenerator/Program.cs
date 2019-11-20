@@ -10,7 +10,7 @@ namespace EFCore.CodeGenerator
         static void Main(string[] args)
         {
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
-            var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
+            var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".mapping.xml", SearchOption.AllDirectories).FirstOrDefault();
             ScaffoldingHelper.Scaffolding("Entities", " QuartzDbContext", scaffoldingFile.Directory.FullName);
         }
     }
