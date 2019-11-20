@@ -2,6 +2,7 @@
 using System.Linq;
 using Entities;
 using JWT.Builder;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Quartz.Api.Models;
@@ -11,6 +12,7 @@ namespace QuartzApi.Controllers
     /// <summary>
     /// 触发器.
     /// </summary>
+    [Authorize]
     [ApiController]
     [Route("api/[controller]/[Action]")]
     public class TriggerController : ControllerBase
