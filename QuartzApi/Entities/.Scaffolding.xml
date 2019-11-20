@@ -1,74 +1,106 @@
 ﻿<?xml version="1.0" encoding="utf-16"?>
 <config>
-  <class Name="Class" Table="class" Summary="班级" PrimaryKey="id">
-    <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
-    <property Name="Name" Column="name" Summary="名称" />
-    <property Name="HeadTeacherId" Column="head_teacher_id" Summary="班主任ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
-    <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
-    <property Name="GradeId" Column="grade_id" />
-    <property Name="Location" Column="location" Summary="地址" />
-    <property Name="IsDeleted" Column="is_deleted" Summary="是否已删除" />
+  <class Name="QrtzBlobTriggers" Table="QRTZ_BLOB_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="BlobData" Column="BLOB_DATA" />
   </class>
-  <class Name="Course" Table="course" Summary="课程" PrimaryKey="id">
-    <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
-    <property Name="Name" Column="name" Summary="名称" />
-    <property Name="TeacherId" Column="teacher_id" Summary="教师ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
-    <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
-    <property Name="IsDeleted" Column="is_deleted" Converter="BoolToZeroOne" Type="bool" Summary="是否已删除" />
+  <class Name="QrtzCalendars" Table="QRTZ_CALENDARS" PrimaryKey="SCHED_NAME,CALENDAR_NAME">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="CalendarName" Column="CALENDAR_NAME" />
+    <property Name="Calendar" Column="CALENDAR" />
   </class>
-  <class Name="CourseScore" Table="course_score" PrimaryKey="id">
-    <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
-    <property Name="Score" Column="score" Summary="分数" />
-    <property Name="StudentId" Column="student_id" Summary="学生ID" />
-    <property Name="CourseId" Column="course_id" Summary="课程ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
-    <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
+  <class Name="QrtzCronTriggers" Table="QRTZ_CRON_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="CronExpression" Column="CRON_EXPRESSION" />
+    <property Name="TimeZoneId" Column="TIME_ZONE_ID" />
   </class>
-  <class Name="Grade" Table="Grade" PrimaryKey="Id">
-    <property Name="Id" ValueGenerated="OnAdd" Column="Id" Summary="主键" />
-    <property Name="Name" Column="Name" Summary="名称" />
+  <class Name="QrtzFiredTriggers" Table="QRTZ_FIRED_TRIGGERS" PrimaryKey="SCHED_NAME,ENTRY_ID">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="EntryId" Column="ENTRY_ID" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="InstanceName" Column="INSTANCE_NAME" />
+    <property Name="FiredTime" Column="FIRED_TIME" />
+    <property Name="SchedTime" Column="SCHED_TIME" />
+    <property Name="Priority" Column="PRIORITY" />
+    <property Name="State" Column="STATE" />
+    <property Name="JobName" Column="JOB_NAME" />
+    <property Name="JobGroup" Column="JOB_GROUP" />
+    <property Name="IsNonconcurrent" Column="IS_NONCONCURRENT" />
+    <property Name="RequestsRecovery" Column="REQUESTS_RECOVERY" />
   </class>
-  <class Name="Log" Table="log" Summary="日志" PrimaryKey="identifier">
-    <property Name="Identifier" DefaultValueSql="(newid())" Column="identifier" Summary="主键" />
-    <property Name="Message" Column="message" Summary="日志内容" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
-    <property Name="UpdateTimeTicks" Column="update_time_ticks" Converter="DateTimeToTicks" Type="DateTime?" Summary="创建时间" />
-    <property Name="Url" Column="url" Converter="UriToString" Type="Uri" Summary="链接" />
+  <class Name="QrtzJobDetails" Table="QRTZ_JOB_DETAILS" PrimaryKey="SCHED_NAME,JOB_NAME,JOB_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="JobName" Column="JOB_NAME" />
+    <property Name="JobGroup" Column="JOB_GROUP" />
+    <property Name="Description" Column="DESCRIPTION" />
+    <property Name="JobClassName" Column="JOB_CLASS_NAME" />
+    <property Name="IsDurable" Column="IS_DURABLE" />
+    <property Name="IsNonconcurrent" Column="IS_NONCONCURRENT" />
+    <property Name="IsUpdateData" Column="IS_UPDATE_DATA" />
+    <property Name="RequestsRecovery" Column="REQUESTS_RECOVERY" />
+    <property Name="JobData" Column="JOB_DATA" />
   </class>
-  <class Name="Student" Table="student" Summary="学生" PrimaryKey="id">
-    <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
-    <property Name="Name" Column="name" Summary="名称" />
-    <property Name="Sex" Column="sex" Converter="EnumToString" Type="SexEnum" Summary="性别" />
-    <property Name="ClassId" Column="class_id" Summary="班级ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
-    <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
-    <property Name="Address" Column="address" Summary="地址" />
-    <property Name="Mobile" Column="mobile" Summary="联系电话" />
-    <property Name="IsDeleted" Column="is_deleted" Converter="BoolToString" Type="bool" Summary="是否已删除" />
+  <class Name="QrtzLocks" Table="QRTZ_LOCKS" PrimaryKey="SCHED_NAME,LOCK_NAME">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="LockName" Column="LOCK_NAME" />
   </class>
-  <class Name="Teacher" Table="teacher" Summary="老师" PrimaryKey="id">
-    <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
-    <property Name="Name" Column="name" Summary="名称" />
-    <property Name="Sex" Column="sex" Converter="EnumToString" Type="SexEnum" Summary="性别" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
-    <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
+  <class Name="QrtzPausedTriggerGrps" Table="QRTZ_PAUSED_TRIGGER_GRPS" PrimaryKey="SCHED_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
   </class>
-  <class Name="TeacherCourseMapping" Table="teacher_course_mapping" PrimaryKey="id">
-    <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
-    <property Name="CourseId" Column="course_id" Summary="课程ID" />
-    <property Name="TeacherId" Column="teacher_id" Summary="教师ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
-    <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
+  <class Name="QrtzSchedulerState" Table="QRTZ_SCHEDULER_STATE" PrimaryKey="SCHED_NAME,INSTANCE_NAME">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="InstanceName" Column="INSTANCE_NAME" />
+    <property Name="LastCheckinTime" Column="LAST_CHECKIN_TIME" />
+    <property Name="CheckinInterval" Column="CHECKIN_INTERVAL" />
   </class>
-  <class Name="VLog" View="v_log" Summary="日志视图">
-    <property Name="Identifier" Column="identifier" Summary="主键" />
-    <property Name="Message" Column="message" Summary="日志内容" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
-    <property Name="UpdateTimeTicks" Column="update_time_ticks" Converter="DateTimeToTicks" Type="DateTime?" Summary="创建时间" />
-    <property Name="Url" Column="url" Converter="UriToString" Type="Uri" Summary="链接" />
-    <property Name="NewId" Column="new_id" />
+  <class Name="QrtzSimpleTriggers" Table="QRTZ_SIMPLE_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="RepeatCount" Column="REPEAT_COUNT" />
+    <property Name="RepeatInterval" Column="REPEAT_INTERVAL" />
+    <property Name="TimesTriggered" Column="TIMES_TRIGGERED" />
+  </class>
+  <class Name="QrtzSimpropTriggers" Table="QRTZ_SIMPROP_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="StrProp1" Column="STR_PROP_1" />
+    <property Name="StrProp2" Column="STR_PROP_2" />
+    <property Name="StrProp3" Column="STR_PROP_3" />
+    <property Name="IntProp1" Column="INT_PROP_1" />
+    <property Name="IntProp2" Column="INT_PROP_2" />
+    <property Name="LongProp1" Column="LONG_PROP_1" />
+    <property Name="LongProp2" Column="LONG_PROP_2" />
+    <property Name="DecProp1" Column="DEC_PROP_1" />
+    <property Name="DecProp2" Column="DEC_PROP_2" />
+    <property Name="BoolProp1" Column="BOOL_PROP_1" />
+    <property Name="BoolProp2" Column="BOOL_PROP_2" />
+    <property Name="TimeZoneId" Column="TIME_ZONE_ID" />
+  </class>
+  <class Name="QrtzTriggers" Table="QRTZ_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="JobName" Column="JOB_NAME" />
+    <property Name="JobGroup" Column="JOB_GROUP" />
+    <property Name="Description" Column="DESCRIPTION" />
+    <property Name="NextFireTime" Column="NEXT_FIRE_TIME" />
+    <property Name="PrevFireTime" Column="PREV_FIRE_TIME" />
+    <property Name="Priority" Column="PRIORITY" />
+    <property Name="TriggerState" Column="TRIGGER_STATE" />
+    <property Name="TriggerType" Column="TRIGGER_TYPE" />
+    <property Name="StartTime" Column="START_TIME" />
+    <property Name="EndTime" Column="END_TIME" />
+    <property Name="CalendarName" Column="CALENDAR_NAME" />
+    <property Name="MisfireInstr" Column="MISFIRE_INSTR" />
+    <property Name="JobData" Column="JOB_DATA" />
   </class>
   <namespace Type="SexEnum">EFCore.Scaffolding.Extension.Entity.Enums</namespace>
 </config>
