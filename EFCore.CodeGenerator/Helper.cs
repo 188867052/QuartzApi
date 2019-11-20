@@ -18,7 +18,7 @@
         static Helper()
         {
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
-            file = Directory.GetFiles(di.Parent.Parent.Parent.Parent.FullName, ".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
+            file = Directory.GetFiles(di.Parent.Parent.Parent.Parent.FullName, ".mapping.xml", SearchOption.AllDirectories).FirstOrDefault();
             ScaffoldConfig = GetScaffoldConfig();
         }
 
