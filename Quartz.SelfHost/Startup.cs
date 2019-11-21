@@ -1,4 +1,3 @@
-using Host;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz.Impl.AdoJobStore;
 using Quartz.Impl.AdoJobStore.Common;
+using Serilog;
+using Serilog.Events;
 
 namespace Quartz.SelfHost
 {
@@ -21,6 +22,9 @@ namespace Quartz.SelfHost
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // 日志配置
+            LogConfig();
+
             services.AddControllers();
             services.AddSingleton(GetScheduler());
         }
@@ -45,14 +49,69 @@ namespace Quartz.SelfHost
             });
         }
 
+        /// <summary>
+        /// 日志配置
+        /// </summary>      
+        private void LogConfig()
+        {
+            //nuget导入
+            //Serilog.Extensions.Logging
+            //Serilog.Sinks.RollingFile
+            //Serilog.Sinks.Async
+            var fileSize = 1024 * 1024 * 10;//10M
+            var fileCount = 2;
+            Log.Logger = new LoggerConfiguration()
+                                 .Enrich.FromLogContext()
+                                 .MinimumLevel.Debug()
+                                 .MinimumLevel.Override("System", LogEventLevel.Information)
+                                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                                 .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Debug).WriteTo.Async(
+                                     a =>
+                                     {
+                                         a.RollingFile("File/logs/log-{Date}-Debug.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                     }
+                                 ))
+                                 .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Information).WriteTo.Async(
+                                     a =>
+                                     {
+                                         a.RollingFile("File/logs/log-{Date}-Information.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                     }
+                                 ))
+                                 .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Warning).WriteTo.Async(
+                                     a =>
+                                     {
+                                         a.RollingFile("File/logs/log-{Date}-Warning.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                     }
+                                 ))
+                                 .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Error).WriteTo.Async(
+                                     a =>
+                                     {
+                                         a.RollingFile("File/logs/log-{Date}-Error.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                     }
+                                 ))
+                                 .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Fatal).WriteTo.Async(
+                                     a =>
+                                     {
+                                         a.RollingFile("File/logs/log-{Date}-Fatal.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+
+                                     }
+                                 ))
+                                 //所有情况
+                                 .WriteTo.Logger(lg => lg.Filter.ByIncludingOnly(p => true)).WriteTo.Async(
+                                     a =>
+                                     {
+                                         a.RollingFile("File/logs/log-{Date}-All.txt", fileSizeLimitBytes: fileSize, retainedFileCountLimit: fileCount);
+                                     }
+                                 )
+                                .CreateLogger();
+        }
+
         private SchedulerCenter GetScheduler()
         {
-            var dbProviderName = "SQLite-Microsoft";
-            var connectionString = "Data Source=C:/Users/54215/source/repos/QuartzApi/Quartz.SelfHost/File/sqliteScheduler.db;";
-
-            string driverDelegateType = typeof(SQLiteDelegate).AssemblyQualifiedName;
+            string connectionString = "Data Source=.;Initial Catalog=quartz;Integrated Security=True";
+            var driverDelegateType = typeof(SqlServerDelegate).AssemblyQualifiedName;
             SchedulerCenter schedulerCenter = SchedulerCenter.Instance;
-            schedulerCenter.Setting(new DbProvider(dbProviderName, connectionString), driverDelegateType);
+            schedulerCenter.Setting(new DbProvider("SqlServer", connectionString), driverDelegateType);
 
             return schedulerCenter;
         }

@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Quartz.SelfHost\Quartz.SelfHost.csproj" />
-    <ProjectReference Include="..\QuartzApi\Quartz.Api.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,9 @@
-﻿using Host.Common;
+﻿using Host;
+using Host.Common;
 using System;
 using System.Collections.Generic;
 
-namespace Host
+namespace Quartz.SelfHost.Entity
 {
     public class ScheduleEntity
     {

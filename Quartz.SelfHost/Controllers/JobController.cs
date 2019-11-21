@@ -1,21 +1,13 @@
 ﻿using Host.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Quartz;
+using Quartz.SelfHost;
+using Quartz.SelfHost.Entity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Host.Controllers
 {
-    [Route("api/[controller]/[Action]")]
-    public class TestController : Controller
-    {
-        [HttpGet]
-        public string Test()
-        {
-            return "成功！";
-        }
-    }
-
     /// <summary>
     /// 任务调度
     /// </summary>
@@ -34,9 +26,9 @@ namespace Host.Controllers
         }
 
         [HttpGet]
-        public string Test()
+        public string Test(int a)
         {
-            return "成功！";
+            return a.ToString();
         }
 
         /// <summary>
@@ -45,7 +37,7 @@ namespace Host.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<BaseResult> AddJob([FromBody]ScheduleEntity entity)
+        public async Task<BaseResult> AddJob(ScheduleEntity entity)
         {
             return await scheduler.AddScheduleJobAsync(entity);
         }
@@ -160,7 +152,7 @@ namespace Host.Controllers
             catch (System.Exception ex)
             {
                 List<JobInfoEntity> list = new List<JobInfoEntity>();
-                list.Add(new JobInfoEntity { GroupName = ex.Message+ex.StackTrace });
+                list.Add(new JobInfoEntity { GroupName = ex.Message + ex.StackTrace });
                 return list;
             }
         }

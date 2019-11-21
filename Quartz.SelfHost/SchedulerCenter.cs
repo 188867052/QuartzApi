@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Host;
 using Host.Common;
 using Host.Entity;
 using Host.Repositories;
-using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Impl.AdoJobStore;
 using Quartz.Impl.AdoJobStore.Common;
 using Quartz.Impl.Matchers;
 using Quartz.Impl.Triggers;
+using Quartz.SelfHost.Entity;
 using Quartz.Simpl;
 using Quartz.Util;
 using Serilog;
 
-namespace Host
+namespace Quartz.SelfHost
 {
     /// <summary>
     /// 调度中心
@@ -156,7 +158,8 @@ namespace Host
             catch (Exception ex)
             {
                 result.Code = 505;
-                result.Msg = ex.Message;
+                result.RequestData = JsonConvert.SerializeObject(entity);
+                result.Msg = ex.Message + Environment.NewLine + ex.StackTrace;
             }
             return result;
         }
