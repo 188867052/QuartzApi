@@ -25,12 +25,6 @@ namespace Host.Controllers
             this.scheduler = schedulerCenter;
         }
 
-        [HttpGet]
-        public string Test(int a)
-        {
-            return a.ToString();
-        }
-
         /// <summary>
         /// 添加任务
         /// </summary>
@@ -46,40 +40,40 @@ namespace Host.Controllers
         /// 暂停任务
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<BaseResult> StopJob([FromBody]JobKey job)
+        [HttpGet]
+        public async Task<BaseResult> StopJob(string group, string name)
         {
-            return await scheduler.StopOrDelScheduleJobAsync(job.Group, job.Name);
+            return await scheduler.StopOrDelScheduleJobAsync(group, name);
         }
 
         /// <summary>
         /// 删除任务
         /// </summary> 
         /// <returns></returns>
-        [HttpPost]
-        public async Task<BaseResult> RemoveJob([FromBody]JobKey job)
+        [HttpGet]
+        public async Task<BaseResult> RemoveJob(string group, string name)
         {
-            return await scheduler.StopOrDelScheduleJobAsync(job.Group, job.Name, true);
+            return await scheduler.StopOrDelScheduleJobAsync(group, name, true);
         }
 
         /// <summary>
         /// 恢复运行暂停的任务
         /// </summary> 
         /// <returns></returns>
-        [HttpPost]
-        public async Task<BaseResult> ResumeJob([FromBody]JobKey job)
+        [HttpGet]
+        public async Task<BaseResult> ResumeJob(string group, string name)
         {
-            return await scheduler.ResumeJobAsync(job.Group, job.Name);
+            return await scheduler.ResumeJobAsync(group, name);
         }
 
         /// <summary>
         /// 查询任务
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<ScheduleEntity> QueryJob([FromBody]JobKey job)
+        [HttpGet]
+        public async Task<ScheduleEntity> QueryJob(string group, string name)
         {
-            return await scheduler.QueryJobAsync(job.Group, job.Name);
+            return await scheduler.QueryJobAsync(group, name);
         }
 
         /// <summary>
@@ -98,24 +92,22 @@ namespace Host.Controllers
         /// <summary>
         /// 立即执行
         /// </summary>
-        /// <param name="job"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<bool> TriggerJob([FromBody]JobKey job)
+        [HttpGet]
+        public async Task<bool> TriggerJob(string group, string name)
         {
-            await scheduler.TriggerJobAsync(job);
+            await scheduler.TriggerJobAsync(new JobKey(name, group));
             return true;
         }
 
         /// <summary>
         /// 获取job日志
         /// </summary>
-        /// <param name="jobKey"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<List<string>> GetJobLogs([FromBody]JobKey jobKey)
+        [HttpGet]
+        public async Task<List<string>> GetJobLogs(string group, string name)
         {
-            return await scheduler.GetJobLogsAsync(jobKey);
+            return await scheduler.GetJobLogsAsync(new JobKey(name, group));
         }
 
         /// <summary>
@@ -170,12 +162,10 @@ namespace Host.Controllers
         /// <summary>
         /// 移除异常信息
         /// </summary>
-        /// <param name="jobKey"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<bool> RemoveErrLog([FromBody]JobKey jobKey)
+        [HttpGet]
+        public async Task<bool> RemoveErrLog(string group, string name)
         {
-            return await scheduler.RemoveErrLog(jobKey.Group, jobKey.Name);
+            return await scheduler.RemoveErrLog(group, name);
         }
     }
 }
