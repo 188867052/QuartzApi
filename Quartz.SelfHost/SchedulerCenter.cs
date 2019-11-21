@@ -161,6 +161,11 @@ namespace Quartz.SelfHost
             return result;
         }
 
+        public async Task ScheduleJob(IJobDetail jobDetail, ITrigger trigger)
+        {
+            await Scheduler.ScheduleJob(jobDetail, trigger);
+        }
+
         /// <summary>
         /// 暂停/删除 指定的计划
         /// </summary>

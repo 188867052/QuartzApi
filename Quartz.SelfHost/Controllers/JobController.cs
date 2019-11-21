@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Quartz.SelfHost.Common;
 using Quartz.SelfHost.Entity;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Quartz.SelfHost.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<BaseResult> AddJob(ScheduleEntity entity)
+        public async Task<BaseResult> AddJob([FromBody] ScheduleEntity entity)
         {
             return await scheduler.AddScheduleJobAsync(entity);
         }

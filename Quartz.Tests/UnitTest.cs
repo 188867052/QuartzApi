@@ -21,7 +21,7 @@ namespace Quartz.Tests
         [Fact]
         public void Test()
         {
-            client.BaseAddress = new Uri("http://localhost:8080");
+            client.BaseAddress = new Uri("http://localhost:5000");
         }
 
         [Fact]
@@ -44,6 +44,15 @@ namespace Quartz.Tests
             ScheduleEntity entity = JsonConvert.DeserializeObject<ScheduleEntity>(json);
             SchedulerCenter scheduler = GetScheduler();
             await scheduler.AddScheduleJobAsync(entity);
+        }
+
+        [Fact]
+        public async Task AddJobByPost()
+        {
+            string json = "{\"jobGroup\":\"default\",\"jobName\":\"°Ù¶È\",\"requestUrl\":\"https://www.baidu.com/\",\"beginTime\":\"2019-11-21T06:49:53.129Z\",\"endTime\":\"2019-11-24T06:49:57.142Z\",\"triggerType\":\"2\",\"requestType\":\"1\",\"headers\":null,\"requestParameters\":null,\"description\":null,\"cron\":null,\"intervalSecond\":1,\"mailMessage\":\"0\"}";
+            var httpContent = new StringContent(json);
+            var a = client.PostAsync("http://localhost:5000/api/Job/AddJob", httpContent);
+            var b = a.Result.Content.ReadAsStringAsync().Result;
         }
 
         [Fact]
