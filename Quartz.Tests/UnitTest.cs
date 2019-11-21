@@ -1,8 +1,15 @@
+using Host;
+using Microsoft.Data.Sqlite;
+using Quartz.Impl.AdoJobStore;
+using Quartz.Impl.AdoJobStore.Common;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Quartz.Tests
@@ -20,6 +27,38 @@ namespace Quartz.Tests
             ListAllProducts();
             ListProduct(1);
         }
+
+        [Fact]
+        public void SqliteConnectionTest()
+        {
+            using DbConnection conn = new SqliteConnection();
+            conn.ConnectionString = "Data Source=C:/Users/54215/source/repos/QuartzApi/Quartz.SelfHost/File/sqliteScheduler.db;";
+            conn.Open();
+            DbCommand comm = conn.CreateCommand();
+            comm.CommandText = "select * from QRTZ_JOB_DETAILS";
+            comm.CommandType = CommandType.Text;
+            using IDataReader reader = comm.ExecuteReader();
+            Assert.Equal(ConnectionState.Open, conn.State);
+        }
+
+        [Fact]
+        public async Task GetAllJob()
+        {
+            SchedulerCenter schedulerCenter = GetScheduler();
+            var jobs = await schedulerCenter.GetAllJobAsync();
+        }
+
+        private SchedulerCenter GetScheduler()
+        {
+            string connectionString = "Data Source=C:/Users/54215/source/repos/QuartzApi/Quartz.SelfHost/File/sqliteScheduler.db;";
+            var driverDelegateType = typeof(SQLiteDelegate).AssemblyQualifiedName;
+
+            SchedulerCenter schedulerCenter = SchedulerCenter.Instance;
+            schedulerCenter.Setting(new DbProvider("SQLite-Microsoft", connectionString), driverDelegateType);
+
+            return schedulerCenter;
+        }
+
 
 
         static void ListAllProducts()

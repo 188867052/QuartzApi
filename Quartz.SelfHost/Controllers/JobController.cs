@@ -153,7 +153,16 @@ namespace Host.Controllers
         [HttpGet]
         public async Task<List<JobInfoEntity>> GetAllJob()
         {
-            return await scheduler.GetAllJobAsync();
+            try
+            {
+                return await scheduler.GetAllJobAsync();
+            }
+            catch (System.Exception ex)
+            {
+                List<JobInfoEntity> list = new List<JobInfoEntity>();
+                list.Add(new JobInfoEntity { GroupName = ex.Message+ex.StackTrace });
+                return list;
+            }
         }
 
         /// <summary>

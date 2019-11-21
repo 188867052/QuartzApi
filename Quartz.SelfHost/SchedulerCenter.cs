@@ -64,21 +64,21 @@ namespace Host
                     return _scheduler;
                 }
 
-                //如果不存在sqlite数据库，则创建
-                if (driverDelegateType.Equals(typeof(SQLiteDelegate).AssemblyQualifiedName)
-                    && !File.Exists("File/sqliteScheduler.db"))
-                {
-                    if (!Directory.Exists("File")) Directory.CreateDirectory("File");
+                ////如果不存在sqlite数据库，则创建
+                //if (driverDelegateType.Equals(typeof(SQLiteDelegate).AssemblyQualifiedName)
+                //    && !File.Exists("File/sqliteScheduler.db"))
+                //{
+                //    if (!Directory.Exists("File")) Directory.CreateDirectory("File");
 
-                    using (var connection = new SqliteConnection("Data Source=File/sqliteScheduler.db"))
-                    {
-                        connection.OpenAsync().Wait();
-                        string sql = File.ReadAllTextAsync("Tables/tables_sqlite.sql").Result;
-                        var command = new SqliteCommand(sql, connection);
-                        command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                }
+                //    using (var connection = new SqliteConnection("Data Source=File/sqliteScheduler.db"))
+                //    {
+                //        connection.OpenAsync().Wait();
+                //        string sql = File.ReadAllTextAsync("Tables/tables_sqlite.sql").Result;
+                //        var command = new SqliteCommand(sql, connection);
+                //        command.ExecuteNonQuery();
+                //        connection.Close();
+                //    }
+                //}
 
                 if (dbProvider == null || string.IsNullOrEmpty(driverDelegateType))
                 {
