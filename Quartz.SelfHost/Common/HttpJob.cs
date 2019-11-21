@@ -1,8 +1,8 @@
 ﻿using Host.Common;
-using Host.Controllers;
-using Host.Model;
 using Newtonsoft.Json;
 using Quartz;
+using Quartz.SelfHost.Controllers;
+using Quartz.SelfHost.Model;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -126,7 +126,7 @@ namespace Host
             Log.Logger.Warning(msg);
             if (mailMessage == MailMessageEnum.All)
             {
-                await new SetingController().SendMail(new Model.SendMailModel()
+                await new SetingController().SendMail(new SendMailModel()
                 {
                     Title = $"任务调度-{title}【警告】消息",
                     Content = msg
@@ -139,7 +139,7 @@ namespace Host
             Log.Logger.Information(msg);
             if (mailMessage == MailMessageEnum.All)
             {
-                await new SetingController().SendMail(new Model.SendMailModel()
+                await new SetingController().SendMail(new SendMailModel()
                 {
                     Title = $"任务调度-{title}消息",
                     Content = msg
@@ -152,7 +152,7 @@ namespace Host
             Log.Logger.Error(ex, msg);
             if (mailMessage == MailMessageEnum.Err || mailMessage == MailMessageEnum.All)
             {
-                await new SetingController().SendMail(new Model.SendMailModel()
+                await new SetingController().SendMail(new SendMailModel()
                 {
                     Title = $"任务调度-{title}【异常】消息",
                     Content = msg

@@ -5,7 +5,7 @@ using System.Linq;
 using Dapper;
 using Oracle.ManagedDataAccess.Client;
 
-namespace Host.Repositories
+namespace Quartz.SelfHost.Repositories
 {
     internal class OracleDynamicParameters
     {
@@ -233,7 +233,7 @@ namespace Host.Repositories
                 {
                     throw new ApplicationException("Attempting to cast a DBNull to a non nullable type!");
                 }
-                return default(T);
+                return default;
             }
             return (T)val;
         }

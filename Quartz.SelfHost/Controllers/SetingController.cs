@@ -1,12 +1,12 @@
-﻿using Host.Entity;
-using Host.Model;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using Newtonsoft.Json;
+using Quartz.SelfHost.Entity;
+using Quartz.SelfHost.Model;
 using System.Threading.Tasks;
 
-namespace Host.Controllers
+namespace Quartz.SelfHost.Controllers
 {
     /// <summary>
     /// 设置

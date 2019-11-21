@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Quartz;
 
-namespace Host.Entity
+namespace Quartz.SelfHost.Entity
 {
     public class JobInfoEntity
     {

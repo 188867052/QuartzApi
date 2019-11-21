@@ -1,6 +1,6 @@
-﻿using Host.Entity;
+﻿using Quartz.SelfHost.Entity;
 
-namespace Host.Model
+namespace Quartz.SelfHost.Model
 {
     public class SendMailModel
     {

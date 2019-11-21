@@ -27,6 +27,7 @@ namespace Quartz.SelfHost
 
             services.AddControllers();
             services.AddSingleton(GetScheduler());
+            AuthenticationConfiguration.AddService(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,11 +39,9 @@ namespace Quartz.SelfHost
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

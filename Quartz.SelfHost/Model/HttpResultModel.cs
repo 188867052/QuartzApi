@@ -1,4 +1,4 @@
-﻿namespace Host.Model
+﻿namespace Quartz.SelfHost.Model
 {
     /// <summary>
     /// Job任务结果

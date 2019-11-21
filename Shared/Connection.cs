@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-
-namespace EFCore.Scaffolding.Extension
+﻿namespace EFCore.Scaffolding.Extension
 {
     public static class Connection
     {

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Quartz;
 
-namespace Host.Entity
+namespace Quartz.SelfHost.Entity
 {
     public class JobBriefInfoEntity
     {
@@ -34,7 +31,7 @@ namespace Host.Entity
         /// <summary>
         /// 上次执行时间
         /// </summary>
-        public DateTime? PreviousFireTime { get; set; }      
+        public DateTime? PreviousFireTime { get; set; }
 
         /// <summary>
         /// 上次执行的异常信息

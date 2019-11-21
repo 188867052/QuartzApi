@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Host.Model
+﻿namespace Quartz.SelfHost.Model
 {
     public class LogInfoModel
     {

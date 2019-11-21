@@ -1,7 +1,6 @@
 ﻿using Host;
 using Host.Common;
 using System;
-using System.Collections.Generic;
 
 namespace Quartz.SelfHost.Entity
 {

@@ -1,16 +1,15 @@
-﻿using Host.Entity;
+﻿using Host;
 using Microsoft.AspNetCore.Mvc;
-using Quartz;
-using Quartz.SelfHost;
 using Quartz.SelfHost.Entity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Host.Controllers
+namespace Quartz.SelfHost.Controllers
 {
     /// <summary>
     /// 任务调度
     /// </summary>
+    //[Authorize]
     [Route("api/[controller]/[Action]")]
     public class JobController : Controller
     {
@@ -22,7 +21,7 @@ namespace Host.Controllers
         /// <param name="schedulerCenter"></param>
         public JobController(SchedulerCenter schedulerCenter)
         {
-            this.scheduler = schedulerCenter;
+            scheduler = schedulerCenter;
         }
 
         /// <summary>
