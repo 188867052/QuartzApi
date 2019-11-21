@@ -53,10 +53,6 @@ namespace Quartz.SelfHost
         /// </summary>      
         private void LogConfig()
         {
-            //nugetµº»Î
-            //Serilog.Extensions.Logging
-            //Serilog.Sinks.RollingFile
-            //Serilog.Sinks.Async
             var fileSize = 1024 * 1024 * 10;//10M
             var fileCount = 2;
             Log.Logger = new LoggerConfiguration()

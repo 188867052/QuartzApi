@@ -1,6 +1,6 @@
-﻿using Host.Common;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Quartz;
+using Quartz.SelfHost.Common;
 using Quartz.SelfHost.Controllers;
 using Quartz.SelfHost.Model;
 using Serilog;

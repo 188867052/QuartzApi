@@ -1,7 +1,7 @@
-﻿namespace Host
+﻿namespace Quartz.SelfHost.Common
 {
     public enum RequestTypeEnum
-    {     
+    {
         None = 0,
         Get = 1,
         Post = 2,

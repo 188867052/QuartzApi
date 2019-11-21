@@ -1,5 +1,5 @@
-﻿using Host;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Quartz.SelfHost.Common;
 using Quartz.SelfHost.Entity;
 using System.Collections.Generic;
 using System.Threading.Tasks;

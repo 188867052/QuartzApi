@@ -1,4 +1,4 @@
-﻿namespace Host.Common
+﻿namespace Quartz.SelfHost.Common
 {
     public enum TriggerTypeEnum
     {

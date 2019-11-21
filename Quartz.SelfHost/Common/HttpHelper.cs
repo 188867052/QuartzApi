@@ -6,8 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-
-namespace Host
+namespace Quartz.SelfHost.Common
 {
     /// <summary>
     /// 请求帮助类
@@ -57,12 +56,12 @@ namespace Host
                         http.DefaultRequestHeaders.Remove(item.Key);
                         http.DefaultRequestHeaders.TryAddWithoutValidation(item.Key, item.Value);
                     }
-                    return await http.PostAsync(new Uri(url), content); 
+                    return await http.PostAsync(new Uri(url), content);
                 }
             }
             else
             {
-                return await GetHttpClient(url).PostAsync(new Uri(url), content); 
+                return await GetHttpClient(url).PostAsync(new Uri(url), content);
             }
         }
 
@@ -90,19 +89,17 @@ namespace Host
             if (headers != null && headers.Any())
             {
                 //如果有headers认证等信息，则每个请求实例一个HttpClient
-                using (HttpClient http = new HttpClient())
+                using HttpClient http = new HttpClient();
+                foreach (var item in headers)
                 {
-                    foreach (var item in headers)
-                    {
-                        http.DefaultRequestHeaders.Remove(item.Key);
-                        http.DefaultRequestHeaders.TryAddWithoutValidation(item.Key, item.Value);
-                    }
-                    return await http.GetAsync(url); 
+                    http.DefaultRequestHeaders.Remove(item.Key);
+                    http.DefaultRequestHeaders.TryAddWithoutValidation(item.Key, item.Value);
                 }
+                return await http.GetAsync(url);
             }
             else
             {
-                return await GetHttpClient(url).GetAsync(url); 
+                return await GetHttpClient(url).GetAsync(url);
             }
         }
 
@@ -129,12 +126,12 @@ namespace Host
                         http.DefaultRequestHeaders.Remove(item.Key);
                         http.DefaultRequestHeaders.TryAddWithoutValidation(item.Key, item.Value);
                     }
-                    return await http.PutAsync(url, content); 
+                    return await http.PutAsync(url, content);
                 }
             }
             else
             {
-                return await GetHttpClient(url).PutAsync(url, content); 
+                return await GetHttpClient(url).PutAsync(url, content);
             }
         }
 
@@ -169,12 +166,12 @@ namespace Host
                         http.DefaultRequestHeaders.Remove(item.Key);
                         http.DefaultRequestHeaders.TryAddWithoutValidation(item.Key, item.Value);
                     }
-                    return await http.DeleteAsync(url); 
+                    return await http.DeleteAsync(url);
                 }
             }
             else
             {
-                return await GetHttpClient(url).DeleteAsync(url); 
+                return await GetHttpClient(url).DeleteAsync(url);
             }
         }
     }

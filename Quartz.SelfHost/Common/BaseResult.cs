@@ -1,4 +1,4 @@
-﻿namespace Host
+﻿namespace Quartz.SelfHost.Common
 {
     public class BaseResult
     {
