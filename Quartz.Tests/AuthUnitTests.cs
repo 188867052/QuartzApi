@@ -11,7 +11,7 @@ namespace Quartz.Tests
 {
     public class AuthUnitTests
     {
-        internal readonly Uri uri = new Uri("http://localhost:5000");
+        internal readonly Uri uri = new Uri("http://localhost:5001");
         private readonly string _token = null;
         private readonly QuartzDbContext dbContext = new QuartzDbContext();
 

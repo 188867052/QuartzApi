@@ -40,6 +40,7 @@ namespace Host
             proc.StartInfo.FileName = context.JobDetail.JobDataMap.GetString(Constant.CmdPath);
             proc.Start();
             proc.WaitForExit();
+            Log.Information(proc.StartInfo.FileName);
         }
 
         public async Task ExecuteHttpJob(IJobExecutionContext context)
