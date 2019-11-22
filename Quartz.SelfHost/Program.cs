@@ -1,59 +1,36 @@
-using System.IO;
-using Entities;
+using System;
+using Autofac.Core;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Quartz.Console.Jobs;
-using Quartz.SelfHost.Common;
+using Topshelf;
 
 namespace Quartz.SelfHost
 {
     public class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            //ScheduleJob<ServerJob>(new JobKey(typeof(ServerJob).Name, "default"), new TriggerKey("triggerName", "triggerGroup"));
-            ScheduleJob<HelloJob>(new JobKey(typeof(HelloJob).Name, "default"), new TriggerKey("triggerName2", "triggerGroup2"));
-
-            var config = new ConfigurationBuilder()
-             .AddCommandLine(args)
-             .AddEnvironmentVariables(prefix: "ASPNETCORE_")
-             .AddJsonFile("appsettings.json")
-             .Build();
-
-            var host = new WebHostBuilder()
-                .UseConfiguration(config)
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseKestrel()
-                .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
-        }
-
-        private static void ScheduleJob<T>(JobKey jobKey, TriggerKey triggerKey) where T : IJob
-        {
-            var scheduler = SchedulerCenter.Instance;
-            var job = JobBuilder.Create<T>()
-                 .WithIdentity(jobKey)
-                 .Build();
-
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity(triggerKey)
-                .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
-                .Build();
-
-            var context = new QuartzDbContext();
-            var entity = context.QrtzTriggers.Find("bennyScheduler", triggerKey.Name, triggerKey.Group);
-            if (entity != null)
+            try
             {
-                context.QrtzTriggers.Remove(entity);
-                context.SaveChanges();
-            }
+                HostFactory.Run(x =>
+                {
+                    x.Service<Service>(s =>
+                    {
+                        s.ConstructUsing(name => new Service());
+                        s.WhenStarted(tc => tc.Start());
+                        s.WhenStopped(tc => tc.Stop());
+                    });
 
-            scheduler.DeleteJobAsync(jobKey).Wait();
-            scheduler.ScheduleJob(job, trigger).Wait();
+                    x.RunAsLocalSystem();
+                    x.SetDescription("我的项目服务");
+                    x.SetDisplayName("MyProjectServiceShowName");
+                    x.SetServiceName("MyProjectService");
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }

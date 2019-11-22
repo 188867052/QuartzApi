@@ -71,6 +71,10 @@ IF OBJECT_ID(N'[dbo].[QRTZ_TRIGGERS]', N'U') IS NOT NULL
 DROP TABLE [dbo].[QRTZ_TRIGGERS];
 GO
 
+IF OBJECT_ID(N'[dbo].[User]', N'U') IS NOT NULL
+DROP TABLE [dbo].[User];
+GO
+
 CREATE TABLE [dbo].[QRTZ_CALENDARS] (
   [SCHED_NAME] nvarchar(120) NOT NULL,
   [CALENDAR_NAME] nvarchar(200) NOT NULL,
@@ -193,6 +197,23 @@ CREATE TABLE [dbo].[QRTZ_TRIGGERS] (
   [MISFIRE_INSTR] int NULL,
   [JOB_DATA] varbinary(max) NULL
 );
+GO
+
+CREATE TABLE [dbo].[User](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[LoginName] [nvarchar](50) NOT NULL,
+	[DisplayName] [nvarchar](50) NULL,
+	[Password] [nvarchar](50) NOT NULL,
+	[IsLocked] [bit] NOT NULL,
+	[CreateTime] [datetime] NOT NULL,
+	[UpdateTime] [datetime] NOT NULL,
+	[IsEnable] [bit] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+ CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
 ALTER TABLE [dbo].[QRTZ_CALENDARS] WITH NOCHECK ADD

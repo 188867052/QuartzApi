@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Quartz.Console.Jobs
+namespace Quartz.SelfHost.Jobs
 {
     public class HelloJob : IJob
     {

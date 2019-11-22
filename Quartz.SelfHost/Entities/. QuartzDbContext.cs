@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Quartz.SelfHost.Enums;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities
