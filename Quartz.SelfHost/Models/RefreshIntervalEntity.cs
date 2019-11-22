@@ -1,4 +1,4 @@
-﻿namespace Quartz.SelfHost.Entity
+﻿namespace Quartz.SelfHost.Models
 {
     public class RefreshIntervalEntity
     {

@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using Newtonsoft.Json;
-using Quartz.SelfHost.Entity;
 using Quartz.SelfHost.Model;
+using Quartz.SelfHost.Models;
 using System.Threading.Tasks;
 
 namespace Quartz.SelfHost.Controllers
@@ -12,7 +12,6 @@ namespace Quartz.SelfHost.Controllers
     /// 设置
     /// </summary>
     [Route("api/[controller]/[Action]")]
-    [EnableCors("AllowSameDomain")] //允许跨域 
     public class SetingController : Controller
     {
         static string filePath = "File/Mail.txt";

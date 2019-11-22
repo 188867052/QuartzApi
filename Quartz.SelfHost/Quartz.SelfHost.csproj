@@ -9,6 +9,7 @@
     <PackageReference Include="MailKit" Version="2.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.1" />
     <PackageReference Include="MimeKit" Version="2.4.1" />
     <PackageReference Include="Oracle.ManagedDataAccess" Version="19.5.0" />
     <PackageReference Include="Quartz" Version="3.0.7" />
@@ -19,6 +20,28 @@
     <PackageReference Include="System.Console" Version="4.3.1" />
     <PackageReference Include="Talk" Version="0.0.0.52" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="..\Shared\Class.cs" Link="Shared\Class.cs" />
+    <Compile Update="..\Shared\Connection.cs" Link="Shared\Connection.cs" />
+    <Compile Update="..\Shared\Entity.cs" Link="Shared\Entity.cs" />
+    <Compile Update="..\Shared\Namespace.cs" Link="Shared\Namespace.cs" />
+    <Compile Update="..\Shared\Property.cs" Link="Shared\Property.cs" />
+    <Compile Update="..\Shared\ScaffoldConfig.cs" Link="Shared\ScaffoldConfig.cs" />
+    <Compile Update="..\Shared\ValueConverterEnum.cs" Link="Shared\ValueConverterEnum.cs" />
+    <Compile Update="..\Shared\WriteAllTextModel.cs" Link="Shared\WriteAllTextModel.cs" />
   </ItemGroup>
 
   <ItemGroup>

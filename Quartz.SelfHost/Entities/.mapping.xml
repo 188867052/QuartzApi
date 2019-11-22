@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<config>
+  <class Name="QrtzBlobTriggers" Table="QRTZ_BLOB_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="BlobData" Column="BLOB_DATA" />
+  </class>
+  <class Name="QrtzCalendars" Table="QRTZ_CALENDARS" PrimaryKey="SCHED_NAME,CALENDAR_NAME">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="CalendarName" Column="CALENDAR_NAME" />
+    <property Name="Calendar" Column="CALENDAR" />
+  </class>
+  <class Name="QrtzCronTriggers" Table="QRTZ_CRON_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="CronExpression" Column="CRON_EXPRESSION" />
+    <property Name="TimeZoneId" Column="TIME_ZONE_ID" />
+  </class>
+  <class Name="QrtzFiredTriggers" Table="QRTZ_FIRED_TRIGGERS" PrimaryKey="SCHED_NAME,ENTRY_ID">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="EntryId" Column="ENTRY_ID" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="InstanceName" Column="INSTANCE_NAME" />
+    <property Name="FiredTime" Column="FIRED_TIME" />
+    <property Name="SchedTime" Column="SCHED_TIME" />
+    <property Name="Priority" Column="PRIORITY" />
+    <property Name="State" Column="STATE" />
+    <property Name="JobName" Column="JOB_NAME" />
+    <property Name="JobGroup" Column="JOB_GROUP" />
+    <property Name="IsNonconcurrent" Column="IS_NONCONCURRENT" />
+    <property Name="RequestsRecovery" Column="REQUESTS_RECOVERY" />
+  </class>
+  <class Name="QrtzJobDetails" Table="QRTZ_JOB_DETAILS" PrimaryKey="SCHED_NAME,JOB_NAME,JOB_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="JobName" Column="JOB_NAME" />
+    <property Name="JobGroup" Column="JOB_GROUP" />
+    <property Name="Description" Column="DESCRIPTION" />
+    <property Name="JobClassName" Column="JOB_CLASS_NAME" />
+    <property Name="IsDurable" Column="IS_DURABLE" />
+    <property Name="IsNonconcurrent" Column="IS_NONCONCURRENT" />
+    <property Name="IsUpdateData" Column="IS_UPDATE_DATA" />
+    <property Name="RequestsRecovery" Column="REQUESTS_RECOVERY" />
+    <property Name="JobData" Column="JOB_DATA" />
+  </class>
+  <class Name="QrtzLocks" Table="QRTZ_LOCKS" PrimaryKey="SCHED_NAME,LOCK_NAME">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="LockName" Column="LOCK_NAME" />
+  </class>
+  <class Name="QrtzPausedTriggerGrps" Table="QRTZ_PAUSED_TRIGGER_GRPS" PrimaryKey="SCHED_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+  </class>
+  <class Name="QrtzSchedulerState" Table="QRTZ_SCHEDULER_STATE" PrimaryKey="SCHED_NAME,INSTANCE_NAME">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="InstanceName" Column="INSTANCE_NAME" />
+    <property Name="LastCheckinTime" Column="LAST_CHECKIN_TIME" />
+    <property Name="CheckinInterval" Column="CHECKIN_INTERVAL" />
+  </class>
+  <class Name="QrtzSimpleTriggers" Table="QRTZ_SIMPLE_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="RepeatCount" Column="REPEAT_COUNT" />
+    <property Name="RepeatInterval" Column="REPEAT_INTERVAL" />
+    <property Name="TimesTriggered" Column="TIMES_TRIGGERED" />
+  </class>
+  <class Name="QrtzSimpropTriggers" Table="QRTZ_SIMPROP_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="StrProp1" Column="STR_PROP_1" />
+    <property Name="StrProp2" Column="STR_PROP_2" />
+    <property Name="StrProp3" Column="STR_PROP_3" />
+    <property Name="IntProp1" Column="INT_PROP_1" />
+    <property Name="IntProp2" Column="INT_PROP_2" />
+    <property Name="LongProp1" Column="LONG_PROP_1" />
+    <property Name="LongProp2" Column="LONG_PROP_2" />
+    <property Name="DecProp1" Column="DEC_PROP_1" />
+    <property Name="DecProp2" Column="DEC_PROP_2" />
+    <property Name="BoolProp1" Column="BOOL_PROP_1" />
+    <property Name="BoolProp2" Column="BOOL_PROP_2" />
+    <property Name="TimeZoneId" Column="TIME_ZONE_ID" />
+  </class>
+  <class Name="QrtzTriggers" Table="QRTZ_TRIGGERS" PrimaryKey="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP">
+    <property Name="SchedName" Column="SCHED_NAME" />
+    <property Name="TriggerName" Column="TRIGGER_NAME" />
+    <property Name="TriggerGroup" Column="TRIGGER_GROUP" />
+    <property Name="JobName" Column="JOB_NAME" />
+    <property Name="JobGroup" Column="JOB_GROUP" />
+    <property Name="Description" Column="DESCRIPTION" />
+    <property Name="NextFireTime" Column="NEXT_FIRE_TIME" Converter="DateTimeToTicks" Type="DateTime?" />
+    <property Name="PrevFireTime" Column="PREV_FIRE_TIME" Converter="DateTimeToTicks" Type="DateTime?" />
+    <property Name="Priority" Column="PRIORITY" />
+    <property Name="TriggerState" Column="TRIGGER_STATE" />
+    <property Name="TriggerType" Column="TRIGGER_TYPE" />
+    <property Name="StartTime" Column="START_TIME" Converter="DateTimeToTicks" Type="DateTime?" />
+    <property Name="EndTime" Column="END_TIME" Converter="DateTimeToTicks" Type="DateTime?" />
+    <property Name="CalendarName" Column="CALENDAR_NAME" />
+    <property Name="MisfireInstr" Column="MISFIRE_INSTR" />
+    <property Name="JobData" Column="JOB_DATA" />
+  </class>
+  <class Name="TaskLogs" Table="TaskLogs" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
+    <property Name="Message" Column="Message" />
+    <property Name="CreateTime" Column="CreateTime" />
+  </class>
+  <class Name="Tasks" Table="Tasks" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
+    <property Name="Url" Column="Url" />
+    <property Name="Cmd" Column="Cmd" />
+    <property Name="Type" Column="Type" Type="TaskTypeEnum" />
+  </class>
+  <class Name="User" Table="User" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
+    <property Name="LoginName" Column="LoginName" />
+    <property Name="DisplayName" Column="DisplayName" />
+    <property Name="Password" Column="Password" Converter="PasswordConverter" />
+    <property Name="IsLocked" Column="IsLocked" />
+    <property Name="CreateTime" Column="CreateTime" />
+    <property Name="UpdateTime" Column="UpdateTime" />
+    <property Name="IsEnable" Column="IsEnable" />
+    <property Name="IsDeleted" Column="IsDeleted" />
+  </class>
+  <namespace Type="TaskTypeEnum">Quartz.Api.Enums</namespace>
+</config>

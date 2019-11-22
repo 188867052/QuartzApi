@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using Quartz.Impl.AdoJobStore;
 using Quartz.Impl.AdoJobStore.Common;
 using Quartz.SelfHost;
-using Quartz.SelfHost.Entity;
+using Quartz.SelfHost.Models;
 using System;
 using System.Data;
 using System.Data.Common;

@@ -1,4 +1,5 @@
 using System.IO;
+using Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -12,7 +13,8 @@ namespace Quartz.SelfHost
     {
         public static void Main(string[] args)
         {
-            ConfigJobs();
+            ScheduleJob<ServerJob>(new JobKey(typeof(ServerJob).Name, "default"), new TriggerKey("triggerName", "triggerGroup"));
+            ScheduleJob<HelloJob>(new JobKey(typeof(HelloJob).Name, "default"), new TriggerKey("triggerName2", "triggerGroup2"));
 
             var config = new ConfigurationBuilder()
              .AddCommandLine(args)
@@ -30,7 +32,7 @@ namespace Quartz.SelfHost
 
         }
 
-        private static void ConfigJobs()
+        private static void ScheduleJob<T>(JobKey jobKey, TriggerKey triggerKey) where T : IJob
         {
             string connectionString = "Data Source=.;Initial Catalog=quartz;Integrated Security=True";
             var driverDelegateType = typeof(SqlServerDelegate).AssemblyQualifiedName;
@@ -38,19 +40,25 @@ namespace Quartz.SelfHost
             schedulerCenter.Setting(new DbProvider("SqlServer", connectionString), driverDelegateType);
 
             var scheduler = schedulerCenter;
-            IJobDetail job = JobBuilder.Create<ServerJob>()
-                 .WithIdentity(nameof(ServerJob), "default")
+            IJobDetail job = JobBuilder.Create<T>()
+                 .WithIdentity(jobKey)
                  .Build();
 
             ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("trigger", "group")
+                .WithIdentity(triggerKey)
                 .StartNow()
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(1)
-                    .RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever())
                 .Build();
 
-            scheduler.StopOrDelScheduleJobAsync("default", nameof(ServerJob), true).Wait();
+            var context = new QuartzDbContext();
+            var entity = context.QrtzTriggers.Find("bennyScheduler", triggerKey.Name, triggerKey.Group);
+            if (entity != null)
+            {
+                context.QrtzTriggers.Remove(entity);
+                context.SaveChanges();
+            }
+
+            scheduler.StopOrDelScheduleJobAsync(jobKey, true).Wait();
             scheduler.ScheduleJob(job, trigger).Wait();
         }
     }

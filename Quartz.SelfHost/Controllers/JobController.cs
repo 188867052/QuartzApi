@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Quartz.SelfHost.Common;
-using Quartz.SelfHost.Entity;
+using Quartz.SelfHost.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,9 +41,9 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<BaseResult> StopJob(string group, string name)
+        public async Task<BaseResult> StopJob(string name, string group)
         {
-            return await scheduler.StopOrDelScheduleJobAsync(group, name);
+            return await scheduler.StopOrDelScheduleJobAsync(new JobKey(name, group));
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace Quartz.SelfHost.Controllers
         /// </summary> 
         /// <returns></returns>
         [HttpGet]
-        public async Task<BaseResult> RemoveJob(string group, string name)
+        public async Task<BaseResult> RemoveJob(string name, string group)
         {
-            return await scheduler.StopOrDelScheduleJobAsync(group, name, true);
+            return await scheduler.StopOrDelScheduleJobAsync(new JobKey(name, group), true);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Quartz.SelfHost.Controllers
         /// </summary> 
         /// <returns></returns>
         [HttpGet]
-        public async Task<BaseResult> ResumeJob(string group, string name)
+        public async Task<BaseResult> ResumeJob(string name, string group)
         {
             return await scheduler.ResumeJobAsync(group, name);
         }
@@ -71,7 +71,7 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ScheduleEntity> QueryJob(string group, string name)
+        public async Task<ScheduleEntity> QueryJob(string name, string group)
         {
             return await scheduler.QueryJobAsync(group, name);
         }
@@ -84,7 +84,7 @@ namespace Quartz.SelfHost.Controllers
         [HttpPost]
         public async Task<BaseResult> ModifyJob([FromBody]ScheduleEntity entity)
         {
-            await scheduler.StopOrDelScheduleJobAsync(entity.JobGroup, entity.JobName, true);
+            await scheduler.StopOrDelScheduleJobAsync(new JobKey(entity.JobName, entity.JobGroup), true);
             await scheduler.AddScheduleJobAsync(entity);
             return new BaseResult() { Msg = "修改计划任务成功！" };
         }
@@ -94,7 +94,7 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<bool> TriggerJob(string group, string name)
+        public async Task<bool> TriggerJob(string name, string group)
         {
             await scheduler.TriggerJobAsync(new JobKey(name, group));
             return true;
@@ -105,7 +105,7 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<string>> GetJobLogs(string group, string name)
+        public async Task<List<string>> GetJobLogs(string name, string group)
         {
             return await scheduler.GetJobLogsAsync(new JobKey(name, group));
         }
@@ -163,7 +163,7 @@ namespace Quartz.SelfHost.Controllers
         /// 移除异常信息
         /// </summary>
         [HttpGet]
-        public async Task<bool> RemoveErrLog(string group, string name)
+        public async Task<bool> RemoveErrLog(string name, string group)
         {
             return await scheduler.RemoveErrLog(group, name);
         }

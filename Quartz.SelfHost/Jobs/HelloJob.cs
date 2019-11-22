@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Quartz.Console.Jobs
 {
@@ -6,8 +7,7 @@ namespace Quartz.Console.Jobs
     {
         public async Task Execute(IJobExecutionContext context)
         {
-            await System.Console.Out.WriteLineAsync("Greetings from HelloJob!");
+            await System.Console.Out.WriteLineAsync($"{DateTime.Now}  Greetings from HelloJob!");
         }
     }
-
 }

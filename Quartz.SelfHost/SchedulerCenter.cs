@@ -11,7 +11,7 @@ using Quartz.Impl.AdoJobStore.Common;
 using Quartz.Impl.Matchers;
 using Quartz.Impl.Triggers;
 using Quartz.SelfHost.Common;
-using Quartz.SelfHost.Entity;
+using Quartz.SelfHost.Models;
 using Quartz.SelfHost.Repositories;
 using Quartz.Simpl;
 using Quartz.Util;
@@ -167,21 +167,21 @@ namespace Quartz.SelfHost
         }
 
         /// <summary>
-        /// 暂停/删除 指定的计划
+        /// 暂停/删除 指定的Job
         /// </summary>
         /// <param name="jobGroup">任务分组</param>
         /// <param name="jobName">任务名称</param>
         /// <param name="isDelete">停止并删除任务</param>
         /// <returns></returns>
-        public async Task<BaseResult> StopOrDelScheduleJobAsync(string jobGroup, string jobName, bool isDelete = false)
+        public async Task<BaseResult> StopOrDelScheduleJobAsync(JobKey jobKey, bool isDelete = false)
         {
             BaseResult result;
             try
             {
-                await Scheduler.PauseJob(new JobKey(jobName, jobGroup));
+                await Scheduler.PauseJob(jobKey);
                 if (isDelete)
                 {
-                    await Scheduler.DeleteJob(new JobKey(jobName, jobGroup));
+                    await Scheduler.DeleteJob(jobKey);
                     result = new BaseResult
                     {
                         Code = 200,
@@ -194,6 +194,49 @@ namespace Quartz.SelfHost
                     {
                         Code = 200,
                         Msg = "停止任务计划成功！"
+                    };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result = new BaseResult
+                {
+                    Code = 505,
+                    Msg = "停止任务计划失败" + ex.Message
+                };
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 暂停/删除 指定的Job
+        /// </summary>
+        /// <param name="jobGroup">任务分组</param>
+        /// <param name="jobName">任务名称</param>
+        /// <param name="isDelete">停止并删除任务</param>
+        /// <returns></returns>
+        public async Task<BaseResult> PauseTrigger(string name, string group, bool isDelete = false)
+        {
+            BaseResult result;
+            try
+            {
+                await Scheduler.PauseTrigger(new TriggerKey(name, group));
+                if (isDelete)
+                {
+                    await Scheduler.PauseTrigger(new TriggerKey(name, group));
+                    result = new BaseResult
+                    {
+                        Code = 200,
+                        Msg = "删除 Trigger 成功！"
+                    };
+                }
+                else
+                {
+                    result = new BaseResult
+                    {
+                        Code = 200,
+                        Msg = "停止 Trigger 成功！"
                     };
                 }
 

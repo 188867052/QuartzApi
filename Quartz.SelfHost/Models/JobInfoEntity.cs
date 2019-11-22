@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Quartz.SelfHost.Entity
+namespace Quartz.SelfHost.Models
 {
-    public class JobBriefInfoEntity
+    public class JobInfoEntity
     {
         /// <summary>
         /// 任务组名
@@ -13,10 +13,10 @@ namespace Quartz.SelfHost.Entity
         /// <summary>
         /// 任务信息
         /// </summary>
-        public List<JobBriefInfo> JobInfoList { get; set; } = new List<JobBriefInfo>();
+        public List<JobInfo> JobInfoList { get; set; } = new List<JobInfo>();
     }
 
-    public class JobBriefInfo
+    public class JobInfo
     {
         /// <summary>
         /// 任务名称
@@ -34,6 +34,16 @@ namespace Quartz.SelfHost.Entity
         public DateTime? PreviousFireTime { get; set; }
 
         /// <summary>
+        /// 开始时间
+        /// </summary>
+        public DateTime BeginTime { get; set; }
+
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        public DateTime? EndTime { get; set; }
+
+        /// <summary>
         /// 上次执行的异常信息
         /// </summary>
         public string LastErrMsg { get; set; }
@@ -42,6 +52,11 @@ namespace Quartz.SelfHost.Entity
         /// 任务状态
         /// </summary>
         public TriggerState TriggerState { get; set; }
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
 
         /// <summary>
         /// 显示状态
@@ -78,5 +93,15 @@ namespace Quartz.SelfHost.Entity
                 return state;
             }
         }
+
+        /// <summary>
+        /// 时间间隔
+        /// </summary>
+        public string Interval { get; set; }
+
+        /// <summary>
+        /// 请求API的地址
+        /// </summary>
+        public string RequestUrl { get; set; }
     }
 }

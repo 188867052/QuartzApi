@@ -1,4 +1,4 @@
-﻿using Quartz.SelfHost.Entity;
+﻿using Quartz.SelfHost.Models;
 using System;
 
 namespace Quartz.SelfHost

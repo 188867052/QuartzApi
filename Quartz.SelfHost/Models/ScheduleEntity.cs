@@ -1,7 +1,7 @@
 ﻿using Quartz.SelfHost.Common;
 using System;
 
-namespace Quartz.SelfHost.Entity
+namespace Quartz.SelfHost.Models
 {
     public class ScheduleEntity
     {
