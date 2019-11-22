@@ -39,7 +39,7 @@ namespace Quartz.Tests
             Assert.Equal(HttpStatusCode.Unauthorized, res.Result.StatusCode);
         }
 
-        internal string Token
+        private string Token
         {
             get
             {
