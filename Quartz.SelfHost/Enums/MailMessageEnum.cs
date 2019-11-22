@@ -1,4 +1,4 @@
-﻿namespace Quartz.SelfHost.Common
+﻿namespace Quartz.SelfHost.Enums
 {
     public enum MailMessageEnum
     {

@@ -1,4 +1,5 @@
 ﻿using Quartz.SelfHost.Common;
+using Quartz.SelfHost.Enums;
 using System;
 
 namespace Quartz.SelfHost.Models

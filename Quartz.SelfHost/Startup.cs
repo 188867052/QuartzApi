@@ -23,10 +23,10 @@ namespace Quartz.SelfHost
         public void ConfigureServices(IServiceCollection services)
         {
             // 日志配置
-            LogConfig();
+            ConfigureLogger();
 
             services.AddControllers();
-            services.AddSingleton(GetScheduler());
+            services.AddSingleton(SchedulerCenter.Instance);
             AuthenticationConfiguration.AddService(services, Configuration);
         }
 
@@ -51,7 +51,7 @@ namespace Quartz.SelfHost
         /// <summary>
         /// 日志配置
         /// </summary>      
-        private void LogConfig()
+        private void ConfigureLogger()
         {
             var fileSize = 1024 * 1024 * 10;//10M
             var fileCount = 2;
@@ -99,16 +99,6 @@ namespace Quartz.SelfHost
                                      }
                                  )
                                 .CreateLogger();
-        }
-
-        private SchedulerCenter GetScheduler()
-        {
-            string connectionString = "Data Source=.;Initial Catalog=quartz;Integrated Security=True";
-            var driverDelegateType = typeof(SqlServerDelegate).AssemblyQualifiedName;
-            SchedulerCenter schedulerCenter = SchedulerCenter.Instance;
-            schedulerCenter.Setting(new DbProvider("SqlServer", connectionString), driverDelegateType);
-
-            return schedulerCenter;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Quartz.SelfHost.Common;
 using Quartz.SelfHost.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ namespace Quartz.SelfHost.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<BaseResult> AddJob([FromBody] ScheduleEntity entity)
+        public async Task<HttpResponseModel> AddJob([FromBody] ScheduleEntity entity)
         {
             return await scheduler.AddScheduleJobAsync(entity);
         }
@@ -41,9 +40,9 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<BaseResult> StopJob(string name, string group)
+        public async Task<HttpResponseModel> StopJob(string name, string group)
         {
-            return await scheduler.StopOrDelScheduleJobAsync(new JobKey(name, group));
+            return await scheduler.PauseJobAsync(new JobKey(name, group));
         }
 
         /// <summary>
@@ -51,9 +50,9 @@ namespace Quartz.SelfHost.Controllers
         /// </summary> 
         /// <returns></returns>
         [HttpGet]
-        public async Task<BaseResult> RemoveJob(string name, string group)
+        public async Task<HttpResponseModel> RemoveJob(string name, string group)
         {
-            return await scheduler.StopOrDelScheduleJobAsync(new JobKey(name, group), true);
+            return await scheduler.DeleteJobAsync(new JobKey(name, group));
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace Quartz.SelfHost.Controllers
         /// </summary> 
         /// <returns></returns>
         [HttpGet]
-        public async Task<BaseResult> ResumeJob(string name, string group)
+        public async Task<HttpResponseModel> ResumeJob(string name, string group)
         {
             return await scheduler.ResumeJobAsync(group, name);
         }
@@ -82,11 +81,11 @@ namespace Quartz.SelfHost.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<BaseResult> ModifyJob([FromBody]ScheduleEntity entity)
+        public async Task<HttpResponseModel> ModifyJob([FromBody]ScheduleEntity entity)
         {
-            await scheduler.StopOrDelScheduleJobAsync(new JobKey(entity.JobName, entity.JobGroup), true);
+            await scheduler.DeleteJobAsync(new JobKey(entity.JobName, entity.JobGroup));
             await scheduler.AddScheduleJobAsync(entity);
-            return new BaseResult() { Msg = "修改计划任务成功！" };
+            return new HttpResponseModel() { Message = "修改计划任务成功！" };
         }
 
         /// <summary>

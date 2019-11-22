@@ -1,6 +1,4 @@
 using Newtonsoft.Json;
-using Quartz.Impl.AdoJobStore;
-using Quartz.Impl.AdoJobStore.Common;
 using Quartz.SelfHost;
 using Quartz.SelfHost.Models;
 using System;
@@ -15,8 +13,7 @@ namespace Quartz.Tests
 {
     public class UnitTest
     {
-
-        static HttpClient client = new HttpClient();
+        private static readonly HttpClient client = new HttpClient();
 
         [Fact]
         public void Test()
@@ -42,7 +39,7 @@ namespace Quartz.Tests
         {
             string json = "{\"jobGroup\":\"default\",\"jobName\":\"°Ù¶È\",\"requestUrl\":\"https://www.baidu.com/\",\"beginTime\":\"2019-11-21T06:49:53.129Z\",\"endTime\":\"2019-11-24T06:49:57.142Z\",\"triggerType\":\"2\",\"requestType\":\"1\",\"headers\":null,\"requestParameters\":null,\"description\":null,\"cron\":null,\"intervalSecond\":1,\"mailMessage\":\"0\"}";
             ScheduleEntity entity = JsonConvert.DeserializeObject<ScheduleEntity>(json);
-            SchedulerCenter scheduler = GetScheduler();
+            var scheduler = SchedulerCenter.Instance;
             await scheduler.AddScheduleJobAsync(entity);
         }
 
@@ -58,19 +55,15 @@ namespace Quartz.Tests
         [Fact]
         public async Task GetAllJob()
         {
-            SchedulerCenter scheduler = GetScheduler();
+            SchedulerCenter scheduler = SchedulerCenter.Instance;
             var jobs = await scheduler.GetAllJobAsync();
         }
 
-        private SchedulerCenter GetScheduler()
+        [Fact]
+        public async Task StopJob()
         {
-            string connectionString = "Data Source=.;Initial Catalog=quartz;Integrated Security=True";
-            var driverDelegateType = typeof(SqlServerDelegate).AssemblyQualifiedName;
-
-            SchedulerCenter schedulerCenter = SchedulerCenter.Instance;
-            schedulerCenter.Setting(new DbProvider("SqlServer", connectionString), driverDelegateType);
-
-            return schedulerCenter;
+            SchedulerCenter scheduler = SchedulerCenter.Instance;
+            var jobs = await scheduler.DeleteJobAsync(new JobKey("sad", "asd")); ;
         }
 
         //[Fact]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Host;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using Quartz.Impl.AdoJobStore.Common;
 using Quartz.Impl.Matchers;
 using Quartz.Impl.Triggers;
 using Quartz.SelfHost.Common;
+using Quartz.SelfHost.Enums;
 using Quartz.SelfHost.Models;
 using Quartz.SelfHost.Repositories;
 using Quartz.Simpl;
@@ -24,31 +26,22 @@ namespace Quartz.SelfHost
     /// </summary>
     public class SchedulerCenter
     {
-        /// <summary>
-        /// 任务调度对象
-        /// </summary>
-        public static readonly SchedulerCenter Instance;
+        private static readonly IDbProvider dbProvider;
+        private static readonly string driverDelegateType;
+        private static IScheduler _scheduler;
+        public static SchedulerCenter Instance;
+
+        private SchedulerCenter()
+        {
+        }
 
         static SchedulerCenter()
         {
             Instance = new SchedulerCenter();
+            string connectionString = "Data Source=.;Initial Catalog=quartz;Integrated Security=True";
+            driverDelegateType = typeof(SqlServerDelegate).AssemblyQualifiedName;
+            dbProvider = new DbProvider("SqlServer", connectionString);
         }
-
-        IDbProvider dbProvider;
-        string driverDelegateType;
-
-        /// <summary>
-        /// 配置Scheduler 仅初始化时生效
-        /// </summary>
-        /// <param name="dbProvider"></param>
-        /// <param name="driverDelegateType"></param>
-        public void Setting(IDbProvider dbProvider, string driverDelegateType)
-        {
-            this.driverDelegateType = driverDelegateType;
-            this.dbProvider = dbProvider;
-        }
-
-        private IScheduler _scheduler;
 
         /// <summary>
         /// 返回任务计划（调度器）
@@ -61,27 +54,6 @@ namespace Quartz.SelfHost
                 if (_scheduler != null)
                 {
                     return _scheduler;
-                }
-
-                ////如果不存在sqlite数据库，则创建
-                //if (driverDelegateType.Equals(typeof(SQLiteDelegate).AssemblyQualifiedName)
-                //    && !File.Exists("File/sqliteScheduler.db"))
-                //{
-                //    if (!Directory.Exists("File")) Directory.CreateDirectory("File");
-
-                //    using (var connection = new SqliteConnection("Data Source=File/sqliteScheduler.db"))
-                //    {
-                //        connection.OpenAsync().Wait();
-                //        string sql = File.ReadAllTextAsync("Tables/tables_sqlite.sql").Result;
-                //        var command = new SqliteCommand(sql, connection);
-                //        command.ExecuteNonQuery();
-                //        connection.Close();
-                //    }
-                //}
-
-                if (dbProvider == null || string.IsNullOrEmpty(driverDelegateType))
-                {
-                    throw new Exception("dbProvider or driverDelegateType is null");
                 }
 
                 DBConnectionManager.Instance.AddConnectionProvider("default", dbProvider);
@@ -98,7 +70,7 @@ namespace Quartz.SelfHost
                 DirectSchedulerFactory.Instance.CreateScheduler("benny" + "Scheduler", "AUTO", new DefaultThreadPool(), jobStore);
                 _scheduler = SchedulerRepository.Instance.Lookup("benny" + "Scheduler").Result;
 
-                _scheduler.Start();//默认开始调度器
+                _scheduler.Start();
                 return _scheduler;
             }
         }
@@ -108,17 +80,17 @@ namespace Quartz.SelfHost
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<BaseResult> AddScheduleJobAsync(ScheduleEntity entity)
+        public async Task<HttpResponseModel> AddScheduleJobAsync(ScheduleEntity entity)
         {
-            var result = new BaseResult();
+            var result = new HttpResponseModel();
             try
             {
                 //检查任务是否已存在
                 var jobKey = new JobKey(entity.JobName, entity.JobGroup);
                 if (await Scheduler.CheckExists(jobKey))
                 {
-                    result.Code = 500;
-                    result.Msg = "任务已存在";
+                    result.Code = HttpStatusCode.OK;
+                    result.Message = "任务已存在";
                     return result;
                 }
                 //http请求配置
@@ -150,13 +122,12 @@ namespace Quartz.SelfHost
 
                 // 告诉Quartz使用我们的触发器来安排作业
                 await Scheduler.ScheduleJob(job, trigger);
-                result.Code = 200;
+                result.Code = HttpStatusCode.OK;
             }
             catch (Exception ex)
             {
-                result.Code = 505;
-                result.RequestData = JsonConvert.SerializeObject(entity);
-                result.Msg = ex.Message + Environment.NewLine + ex.StackTrace;
+                result.Code = HttpStatusCode.InternalServerError;
+                result.Message = ex.Message + Environment.NewLine + ex.StackTrace;
             }
             return result;
         }
@@ -167,89 +138,72 @@ namespace Quartz.SelfHost
         }
 
         /// <summary>
-        /// 暂停/删除 指定的Job
+        /// 删除 指定的Job
         /// </summary>
         /// <param name="jobGroup">任务分组</param>
         /// <param name="jobName">任务名称</param>
-        /// <param name="isDelete">停止并删除任务</param>
         /// <returns></returns>
-        public async Task<BaseResult> StopOrDelScheduleJobAsync(JobKey jobKey, bool isDelete = false)
+        public async Task<HttpResponseModel> DeleteJobAsync(JobKey jobKey)
         {
-            BaseResult result;
             try
             {
-                await Scheduler.PauseJob(jobKey);
-                if (isDelete)
+                var isExists = await Scheduler.CheckExists(jobKey);
+                if (!isExists)
                 {
-                    await Scheduler.DeleteJob(jobKey);
-                    result = new BaseResult
+                    return new HttpResponseModel
                     {
-                        Code = 200,
-                        Msg = "删除任务计划成功！"
-                    };
-                }
-                else
-                {
-                    result = new BaseResult
-                    {
-                        Code = 200,
-                        Msg = "停止任务计划成功！"
+                        Code = HttpStatusCode.OK,
+                        Message = $"jobKey: Name={jobKey.Name}, Group={jobKey.Group}不存在！"
                     };
                 }
 
+                await Scheduler.PauseJob(jobKey);
+                await Scheduler.DeleteJob(jobKey);
+                return new HttpResponseModel
+                {
+                    Code = HttpStatusCode.OK,
+                    Message = "删除任务计划成功！"
+                };
             }
             catch (Exception ex)
             {
-                result = new BaseResult
+                return new HttpResponseModel
                 {
-                    Code = 505,
-                    Msg = "停止任务计划失败" + ex.Message
+                    Code = HttpStatusCode.InternalServerError,
+                    Message = "停止任务计划失败" + ex.Message
                 };
             }
-            return result;
         }
 
-        /// <summary>
-        /// 暂停/删除 指定的Job
-        /// </summary>
-        /// <param name="jobGroup">任务分组</param>
-        /// <param name="jobName">任务名称</param>
-        /// <param name="isDelete">停止并删除任务</param>
-        /// <returns></returns>
-        public async Task<BaseResult> PauseTrigger(string name, string group, bool isDelete = false)
+        public async Task<HttpResponseModel> PauseJobAsync(JobKey jobKey)
         {
-            BaseResult result;
             try
             {
-                await Scheduler.PauseTrigger(new TriggerKey(name, group));
-                if (isDelete)
+                var isExists = await Scheduler.CheckExists(jobKey);
+                if (!isExists)
                 {
-                    await Scheduler.PauseTrigger(new TriggerKey(name, group));
-                    result = new BaseResult
+                    return new HttpResponseModel
                     {
-                        Code = 200,
-                        Msg = "删除 Trigger 成功！"
-                    };
-                }
-                else
-                {
-                    result = new BaseResult
-                    {
-                        Code = 200,
-                        Msg = "停止 Trigger 成功！"
+                        Code = HttpStatusCode.OK,
+                        Message = $"jobKey: Name={jobKey.Name}, Group={jobKey.Group}不存在！"
                     };
                 }
 
+                await Scheduler.PauseJob(jobKey);
+                return new HttpResponseModel
+                {
+                    Code = HttpStatusCode.OK,
+                    Message = "停止任务计划成功！"
+                };
             }
             catch (Exception ex)
             {
-                result = new BaseResult
+                return new HttpResponseModel
                 {
-                    Code = 505,
-                    Msg = "停止任务计划失败" + ex.Message
+                    Code = HttpStatusCode.InternalServerError,
+                    Message = ex.ToString()
                 };
             }
-            return result;
         }
 
         /// <summary>
@@ -257,9 +211,9 @@ namespace Quartz.SelfHost
         /// </summary>
         /// <param name="jobName">任务名称</param>
         /// <param name="jobGroup">任务分组</param>
-        public async Task<BaseResult> ResumeJobAsync(string jobGroup, string jobName)
+        public async Task<HttpResponseModel> ResumeJobAsync(string jobGroup, string jobName)
         {
-            BaseResult result = new BaseResult();
+            HttpResponseModel result = new HttpResponseModel();
             try
             {
                 //检查任务是否存在
@@ -268,18 +222,18 @@ namespace Quartz.SelfHost
                 {
                     //任务已经存在则暂停任务
                     await Scheduler.ResumeJob(jobKey);
-                    result.Msg = "恢复任务计划成功！";
+                    result.Message = "恢复任务计划成功！";
                     Log.Information(string.Format("任务“{0}”恢复运行", jobName));
                 }
                 else
                 {
-                    result.Msg = "任务不存在";
+                    result.Message = "任务不存在";
                 }
             }
             catch (Exception ex)
             {
-                result.Msg = "恢复任务计划失败！";
-                result.Code = 500;
+                result.Message = "恢复任务计划失败！";
+                result.Code = HttpStatusCode.InternalServerError;
                 Log.Error(string.Format("恢复任务失败！{0}", ex));
             }
             return result;
@@ -537,7 +491,6 @@ namespace Quartz.SelfHost
                    .ForJob(entity.JobName, entity.JobGroup)//作业名称
                    .Build();
         }
-
     }
 }
 

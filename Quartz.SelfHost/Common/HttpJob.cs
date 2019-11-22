@@ -2,6 +2,7 @@
 using Quartz;
 using Quartz.SelfHost.Common;
 using Quartz.SelfHost.Controllers;
+using Quartz.SelfHost.Enums;
 using Quartz.SelfHost.Model;
 using Serilog;
 using System;

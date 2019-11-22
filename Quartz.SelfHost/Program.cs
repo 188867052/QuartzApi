@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Quartz.Console.Jobs;
-using Quartz.Impl.AdoJobStore;
-using Quartz.Impl.AdoJobStore.Common;
 
 namespace Quartz.SelfHost
 {
@@ -29,17 +27,11 @@ namespace Quartz.SelfHost
                 .Build();
 
             host.Run();
-
         }
 
         private static void ScheduleJob<T>(JobKey jobKey, TriggerKey triggerKey) where T : IJob
         {
-            string connectionString = "Data Source=.;Initial Catalog=quartz;Integrated Security=True";
-            var driverDelegateType = typeof(SqlServerDelegate).AssemblyQualifiedName;
-            SchedulerCenter schedulerCenter = SchedulerCenter.Instance;
-            schedulerCenter.Setting(new DbProvider("SqlServer", connectionString), driverDelegateType);
-
-            var scheduler = schedulerCenter;
+            var scheduler = SchedulerCenter.Instance;
             IJobDetail job = JobBuilder.Create<T>()
                  .WithIdentity(jobKey)
                  .Build();
@@ -58,7 +50,7 @@ namespace Quartz.SelfHost
                 context.SaveChanges();
             }
 
-            scheduler.StopOrDelScheduleJobAsync(jobKey, true).Wait();
+            scheduler.DeleteJobAsync(jobKey).Wait();
             scheduler.ScheduleJob(job, trigger).Wait();
         }
     }
