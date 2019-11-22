@@ -13,7 +13,6 @@ using Quartz.Impl.AdoJobStore;
 using Quartz.Impl.AdoJobStore.Common;
 using Quartz.Impl.Matchers;
 using Quartz.Impl.Triggers;
-using Quartz.SelfHost.Common;
 using Quartz.SelfHost.Enums;
 using Quartz.SelfHost.Models;
 using Quartz.SelfHost.Repositories;
@@ -21,7 +20,7 @@ using Quartz.Simpl;
 using Quartz.Util;
 using Serilog;
 
-namespace Quartz.SelfHost
+namespace Quartz.SelfHost.Common
 {
     /// <summary>
     /// 调度中心

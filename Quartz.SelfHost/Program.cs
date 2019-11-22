@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Quartz.Console.Jobs;
+using Quartz.SelfHost.Common;
 
 namespace Quartz.SelfHost
 {
@@ -11,7 +12,7 @@ namespace Quartz.SelfHost
     {
         public static void Main(string[] args)
         {
-            ScheduleJob<ServerJob>(new JobKey(typeof(ServerJob).Name, "default"), new TriggerKey("triggerName", "triggerGroup"));
+            //ScheduleJob<ServerJob>(new JobKey(typeof(ServerJob).Name, "default"), new TriggerKey("triggerName", "triggerGroup"));
             ScheduleJob<HelloJob>(new JobKey(typeof(HelloJob).Name, "default"), new TriggerKey("triggerName2", "triggerGroup2"));
 
             var config = new ConfigurationBuilder()

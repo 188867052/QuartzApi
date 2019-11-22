@@ -57,7 +57,7 @@ namespace Quartz.SelfHost.Models
         /// </summary>
         public bool IsExcuteCmd { get; set; }
 
-        public bool CmdPath { get; set; }
+        public string CmdPath { get; set; }
 
         /// <summary>
         /// 请求参数（Post，Put请求用）
