@@ -33,7 +33,7 @@ namespace Quartz.SelfHost
         public static void AddJwtBearerAuthentication(this IServiceCollection services, AuthenticationSettings appSettings)
         {
             //使用应用密钥得到一个加密密钥字节数组
-            byte[] key = Encoding.ASCII.GetBytes("0123456789ABCDEF");
+            byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

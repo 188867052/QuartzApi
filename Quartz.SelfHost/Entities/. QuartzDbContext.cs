@@ -39,12 +39,6 @@ namespace Entities
 
         public virtual DbSet<QrtzTriggers> QrtzTriggers { get; set; }
 
-        public virtual DbSet<ScheduleSetting> ScheduleSetting { get; set; }
-
-        public virtual DbSet<TaskLogs> TaskLogs { get; set; }
-
-        public virtual DbSet<Tasks> Tasks { get; set; }
-
         public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -487,37 +481,6 @@ namespace Entities
                     .HasForeignKey(d => new { d.SchedName, d.JobName, d.JobGroup })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS");
-            });
-
-            modelBuilder.Entity<ScheduleSetting>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.BeginTime).HasColumnType("datetime");
-
-                entity.Property(e => e.Cron).HasMaxLength(50);
-
-                entity.Property(e => e.Description).HasMaxLength(50);
-
-                entity.Property(e => e.JobGroup).HasMaxLength(50);
-
-                entity.Property(e => e.JobName).HasMaxLength(50);
-
-                entity.Property(e => e.RequestUrl).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<TaskLogs>(entity =>
-            {
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
-
-                entity.Property(e => e.Message).HasMaxLength(500);
-            });
-
-            modelBuilder.Entity<Tasks>(entity =>
-            {
-                entity.Property(e => e.Cmd).HasMaxLength(50);
-
-                entity.Property(e => e.Url).HasMaxLength(50);
             });
 
             modelBuilder.Entity<User>(entity =>

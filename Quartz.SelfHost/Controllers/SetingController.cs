@@ -17,7 +17,6 @@ namespace Quartz.SelfHost.Controllers
     public class SetingController : Controller
     {
         static string filePath = "File/Mail.txt";
-        static string refreshIntervalPath = "File/RefreshInterval.json";
 
         static MailModel mailData = null;
         /// <summary>
@@ -31,28 +30,6 @@ namespace Quartz.SelfHost.Controllers
             mailData = mailEntity;
             await System.IO.File.WriteAllTextAsync(filePath, JsonConvert.SerializeObject(mailEntity));
             return true;
-        }
-
-        /// <summary>
-        /// 保存刷新间隔
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<bool> SaveRefreshInterval([FromBody]RefreshIntervalEntity entity)
-        {
-            await System.IO.File.WriteAllTextAsync(refreshIntervalPath, JsonConvert.SerializeObject(entity));
-            return true;
-        }
-
-        /// <summary>
-        /// 获取
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<RefreshIntervalEntity> GetRefreshInterval()
-        {
-            return JsonConvert.DeserializeObject<RefreshIntervalEntity>(await System.IO.File.ReadAllTextAsync(refreshIntervalPath));
         }
 
         /// <summary>
