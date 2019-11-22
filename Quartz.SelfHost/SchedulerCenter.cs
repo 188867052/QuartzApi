@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using EFCore.Scaffolding.Extension;
 using Host;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -38,7 +39,7 @@ namespace Quartz.SelfHost
         static SchedulerCenter()
         {
             Instance = new SchedulerCenter();
-            string connectionString = "Data Source=.;Initial Catalog=quartz;Integrated Security=True";
+            string connectionString = Connection.ConnectionString;
             driverDelegateType = typeof(SqlServerDelegate).AssemblyQualifiedName;
             dbProvider = new DbProvider("SqlServer", connectionString);
         }

@@ -102,6 +102,15 @@
     <property Name="MisfireInstr" Column="MISFIRE_INSTR" />
     <property Name="JobData" Column="JOB_DATA" />
   </class>
+  <class Name="ScheduleSetting" Table="ScheduleSetting" PrimaryKey="id">
+    <property Name="Id" ValueGenerated="OnAdd" Column="id" />
+    <property Name="JobName" Column="JobName" />
+    <property Name="JobGroup" Column="JobGroup" />
+    <property Name="BeginTime" Column="BeginTime" />
+    <property Name="Cron" Column="Cron" />
+    <property Name="RequestUrl" Column="RequestUrl" />
+    <property Name="Description" Column="Description" />
+  </class>
   <class Name="TaskLogs" Table="TaskLogs" PrimaryKey="Id">
     <property Name="Id" ValueGenerated="OnAdd" Column="Id" />
     <property Name="Message" Column="Message" />
@@ -124,5 +133,5 @@
     <property Name="IsEnable" Column="IsEnable" />
     <property Name="IsDeleted" Column="IsDeleted" />
   </class>
-  <namespace Type="TaskTypeEnum">Quartz.Api.Enums</namespace>
+  <namespace Type="TaskTypeEnum">Quartz.SelfHost.Enums</namespace>
 </config>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Quartz.SelfHost.Models;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Quartz.SelfHost.Controllers
     /// <summary>
     /// 任务调度
     /// </summary>
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]/[Action]")]
     public class JobController : Controller
     {

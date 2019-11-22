@@ -16,17 +16,17 @@ namespace Quartz.Tests
         private readonly QuartzDbContext dbContext = new QuartzDbContext();
 
         [Fact]
-        public void TestGetToken()
+        public void get_token_test()
         {
             Assert.NotEmpty(this.Token);
         }
 
         [Fact]
-        public void TestGetWithToken()
+        public void get_with_token_test()
         {
             var client = new HttpClient() { BaseAddress = uri };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", this.Token);
-            var res = client.GetAsync("/api/Trigger/GetAll");
+            var res = client.GetAsync("/api/Job/GetAllJob");
             var json = res.Result.Content.ReadAsStringAsync().Result;
             Assert.Equal(HttpStatusCode.OK, res.Result.StatusCode);
         }
@@ -35,7 +35,7 @@ namespace Quartz.Tests
         public void TestGetWithoutToken()
         {
             var client = new HttpClient() { BaseAddress = uri };
-            var res = client.GetAsync("/api/Job/GetAll");
+            var res = client.GetAsync("/api/Job/GetAllJob");
             Assert.Equal(HttpStatusCode.Unauthorized, res.Result.StatusCode);
         }
 
@@ -66,7 +66,7 @@ namespace Quartz.Tests
                 dbContext.SaveChanges();
 
                 var client = new HttpClient() { BaseAddress = uri };
-                var res = client.GetAsync($"/api/Auth/SignIn?username={user.LoginName}&password={user.Password}");
+                var res = client.GetAsync($"/api/Auth/Login?username={user.LoginName}&password={user.Password}");
                 var json = res.Result.Content.ReadAsStringAsync().Result;
                 var t = JsonConvert.DeserializeObject<dynamic>(json).token;
                 Assert.Equal(HttpStatusCode.OK, res.Result.StatusCode);

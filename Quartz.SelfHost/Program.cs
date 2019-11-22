@@ -17,6 +17,7 @@ namespace Quartz.SelfHost
             var config = new ConfigurationBuilder()
              .AddCommandLine(args)
              .AddEnvironmentVariables(prefix: "ASPNETCORE_")
+             .AddJsonFile("appsettings.json")
              .Build();
 
             var host = new WebHostBuilder()
@@ -32,14 +33,14 @@ namespace Quartz.SelfHost
         private static void ScheduleJob<T>(JobKey jobKey, TriggerKey triggerKey) where T : IJob
         {
             var scheduler = SchedulerCenter.Instance;
-            IJobDetail job = JobBuilder.Create<T>()
+            var job = JobBuilder.Create<T>()
                  .WithIdentity(jobKey)
                  .Build();
 
-            ITrigger trigger = TriggerBuilder.Create()
+            var trigger = TriggerBuilder.Create()
                 .WithIdentity(triggerKey)
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
                 .Build();
 
             var context = new QuartzDbContext();

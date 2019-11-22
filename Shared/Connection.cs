@@ -1,7 +1,26 @@
-﻿namespace EFCore.Scaffolding.Extension
+﻿using Microsoft.Extensions.Configuration;
+
+namespace EFCore.Scaffolding.Extension
 {
     public static class Connection
     {
-        public static string ConnectionString= @"Data Source=.;Initial Catalog=quartz;Integrated Security=True";
+        private static string connectionString;
+
+        public static string ConnectionString
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(connectionString))
+                {
+                    return connectionString;
+                }
+
+                var config = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+                connectionString = config.GetSection("ConnectionString").Value;
+                return connectionString;
+            }
+        }
     }
 }

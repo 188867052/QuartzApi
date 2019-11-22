@@ -46,7 +46,6 @@
 
   <ItemGroup>
     <Folder Include="File\logs\" />
-    <Folder Include="Model\" />
   </ItemGroup>
 
 </Project>

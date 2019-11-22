@@ -12,7 +12,7 @@ namespace Quartz.SelfHost.Controllers
     /// 权限控制.
     /// </summary>
     [Route("api/[controller]/[Action]")]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
         private readonly QuartzDbContext dbContext;
         private readonly AuthenticationSettings appSettings;
@@ -30,33 +30,35 @@ namespace Quartz.SelfHost.Controllers
         /// <param name="password">password.</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult SignIn(string username, string password)
+        public IActionResult Login(string username, string password)
         {
-            using (dbContext)
+            try
             {
-                User user = dbContext.User.FirstOrDefault(x => x.LoginName == username.Trim());
-                if (user == null || !user.IsEnable)
+                using (dbContext)
                 {
-                    return FailResponse("UserNotExist");
-                }
+                    User user = dbContext.User.FirstOrDefault(x => x.LoginName == username.Trim());
+                    if (user == null || !user.IsEnable)
+                    {
+                        return FailResponse("UserNotExist");
+                    }
 
-                if (user.Password != password.Trim())
-                {
-                    return FailResponse("PasswordWrong");
-                }
+                    if (user.Password != password.Trim())
+                    {
+                        return FailResponse("PasswordWrong");
+                    }
 
-                if (user.IsLocked)
-                {
-                    return FailResponse("Locked");
-                }
+                    if (user.IsLocked)
+                    {
+                        return FailResponse("Locked");
+                    }
 
-                if (!user.IsEnable)
-                {
-                    return FailResponse("UserDisable");
-                }
+                    if (!user.IsEnable)
+                    {
+                        return FailResponse("UserDisable");
+                    }
 
-                var claimsIdentity = new ClaimsIdentity(new[]
-                {
+                    var claimsIdentity = new ClaimsIdentity(new[]
+                    {
                     new Claim(ClaimTypes.Name, username),
                     new Claim(nameof(Entities.User.Id), user.Id.ToString()),
                     new Claim(nameof(Entities.User.LoginName), user.LoginName),
@@ -64,11 +66,20 @@ namespace Quartz.SelfHost.Controllers
                     new Claim(nameof(Entities.User.IsEnable),  user.IsEnable.ToString()),
                 });
 
+                    return Ok(new
+                    {
+                        token = AuthenticationConfiguration.GetJwtAccessToken(appSettings, claimsIdentity),
+                        code = (int)HttpStatusCode.OK,
+                        message = "成功",
+                    });
+                }
+            }
+            catch (System.Exception ex)
+            {
+
                 return Ok(new
                 {
-                    token = AuthenticationConfiguration.GetJwtAccessToken(appSettings, claimsIdentity),
-                    code = (int)HttpStatusCode.OK,
-                    message = "成功",
+                    message = ex.ToString(),
                 });
             }
         }

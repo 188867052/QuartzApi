@@ -1,7 +1,7 @@
 ﻿using System;
-using EFCore.Scaffolding.Extension;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Quartz.SelfHost.Enums;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities
@@ -39,6 +39,8 @@ namespace Entities
 
         public virtual DbSet<QrtzTriggers> QrtzTriggers { get; set; }
 
+        public virtual DbSet<ScheduleSetting> ScheduleSetting { get; set; }
+
         public virtual DbSet<TaskLogs> TaskLogs { get; set; }
 
         public virtual DbSet<Tasks> Tasks { get; set; }
@@ -49,7 +51,7 @@ namespace Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Connection.ConnectionString);
+                optionsBuilder.UseSqlServer(EFCore.Scaffolding.Extension.Connection.ConnectionString);
             }
         }
 
@@ -487,6 +489,23 @@ namespace Entities
                     .HasConstraintName("FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS");
             });
 
+            modelBuilder.Entity<ScheduleSetting>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.BeginTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Cron).HasMaxLength(50);
+
+                entity.Property(e => e.Description).HasMaxLength(50);
+
+                entity.Property(e => e.JobGroup).HasMaxLength(50);
+
+                entity.Property(e => e.JobName).HasMaxLength(50);
+
+                entity.Property(e => e.RequestUrl).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<TaskLogs>(entity =>
             {
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
@@ -512,7 +531,7 @@ namespace Entities
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Password)
-                    .HasConversion(new ValueConverter<string, string>(o => Helper.Encrypt(o), o => Helper.Decrypt(o)))
+                    .HasConversion(new ValueConverter<string, string>(o => SecurityHelper.Encrypt(o), o => SecurityHelper.Decrypt(o)))
                     .IsRequired()
                     .HasMaxLength(50);
 

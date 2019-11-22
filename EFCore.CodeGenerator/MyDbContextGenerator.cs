@@ -71,7 +71,7 @@
                         line.Add($@".HasConversion(new UriToStringConverter())");
                         break;
                     case ValueConverterEnum.PasswordConverter:
-                        line.Add($@".HasConversion(new ValueConverter<string, string>(o => Helper.Encrypt(o), o => Helper.Decrypt(o)))");
+                        line.Add($@".HasConversion(new ValueConverter<string, string>(o => SecurityHelper.Encrypt(o), o => SecurityHelper.Decrypt(o)))");
                         break;
                     case ValueConverterEnum.None:
                         break;

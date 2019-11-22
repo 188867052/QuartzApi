@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Entities
 {
-    public static class Helper
+    public static class SecurityHelper
     {
         private static string pwd = "sdsf343434234234";
         // AES 的 key 支持 128 位，最大支持 256 位。256 位需要 32 个字节。

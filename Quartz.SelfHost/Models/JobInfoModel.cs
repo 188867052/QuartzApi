@@ -61,38 +61,16 @@ namespace Quartz.SelfHost.Models
         /// <summary>
         /// 显示状态
         /// </summary>
-        public string DisplayState
+        public string DisplayState => TriggerState switch
         {
-            get
-            {
-                var state = string.Empty;
-                switch (TriggerState)
-                {
-                    case TriggerState.Normal:
-                        state = "正常";
-                        break;
-                    case TriggerState.Paused:
-                        state = "暂停";
-                        break;
-                    case TriggerState.Complete:
-                        state = "完成";
-                        break;
-                    case TriggerState.Error:
-                        state = "异常";
-                        break;
-                    case TriggerState.Blocked:
-                        state = "阻塞";
-                        break;
-                    case TriggerState.None:
-                        state = "不存在";
-                        break;
-                    default:
-                        state = "未知";
-                        break;
-                }
-                return state;
-            }
-        }
+            TriggerState.Normal => "正常",
+            TriggerState.Paused => "暂停",
+            TriggerState.Complete => "完成",
+            TriggerState.Error => "异常",
+            TriggerState.Blocked => "阻塞",
+            TriggerState.None => "不存在",
+            _ => "未知",
+        };
 
         /// <summary>
         /// 时间间隔
