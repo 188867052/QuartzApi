@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ namespace Quartz.SelfHost.Controllers
     /// <summary>
     /// 设置
     /// </summary>
+    //[Authorize]
     [Route("api/[controller]/[Action]")]
     public class SetingController : Controller
     {

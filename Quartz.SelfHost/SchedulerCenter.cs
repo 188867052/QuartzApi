@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using EFCore.Scaffolding.Extension;
 using Host;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Quartz.Impl;
@@ -79,49 +80,42 @@ namespace Quartz.SelfHost
         /// <summary>
         /// 添加一个工作调度
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<HttpResponseModel> AddScheduleJobAsync(ScheduleModel entity)
+        public async Task<HttpResponseModel> AddScheduleJobAsync(ScheduleModel model)
         {
             var result = new HttpResponseModel();
             try
             {
                 //检查任务是否已存在
-                var jobKey = new JobKey(entity.JobName, entity.JobGroup);
+                var jobKey = new JobKey(model.JobName, model.JobGroup);
                 if (await Scheduler.CheckExists(jobKey))
                 {
                     result.Code = HttpStatusCode.OK;
                     result.Message = "任务已存在";
                     return result;
                 }
-                //http请求配置
-                var httpDir = new Dictionary<string, string>()
-                {
-                    { "RequestUrl",entity.RequestUrl},
-                    { "RequestParameters",entity.RequestParameters},
-                    { "RequestType", ((int)entity.RequestType).ToString()},
-                    { Constant.HEADERS, entity.Headers},
-                    { Constant.MAILMESSAGE, ((int)entity.MailMessage).ToString()},
-                };
-                // 定义这个工作，并将其绑定到我们的IJob实现类                
-                IJobDetail job = JobBuilder.CreateForAsync<HttpJob>()
-                    .SetJobData(new JobDataMap(httpDir))
-                    .WithDescription(entity.Description)
-                    .WithIdentity(entity.JobName, entity.JobGroup)
-                    .Build();
-                // 创建触发器
-                ITrigger trigger;
-                //校验是否正确的执行周期表达式
-                if (entity.TriggerType == TriggerTypeEnum.Cron)//CronExpression.IsValidExpression(entity.Cron))
-                {
-                    trigger = CreateCronTrigger(entity);
-                }
-                else
-                {
-                    trigger = CreateSimpleTrigger(entity);
-                }
 
-                // 告诉Quartz使用我们的触发器来安排作业
+                //http请求配置
+                var setting = new Dictionary<string, string>()
+                {
+                    { Constant.CmdPath,model.CmdPath.ToString()},
+                    { Constant.IsExcuteCmd,model.IsExcuteCmd.ToString()},
+                    { Constant.RequestUrl,model.RequestUrl},
+                    { Constant.RequestParameters,model.RequestParameters},
+                    { Constant.RequestType, ((int)model.RequestType).ToString()},
+                    { Constant.Headers, model.Headers},
+                    { Constant.MailMessage, ((int)model.MailMessage).ToString()},
+                };
+
+                // 定义这个工作，并将其绑定到我们的IJob实现类                
+                var job = JobBuilder.CreateForAsync<ExcuteJob>()
+                    .SetJobData(new JobDataMap(setting))
+                    .WithDescription(model.Description)
+                    .WithIdentity(model.JobName, model.JobGroup)
+                    .Build();
+
+                var trigger = model.TriggerType == TriggerTypeEnum.Cron ? CreateCronTrigger(model) : CreateSimpleTrigger(model);
                 await Scheduler.ScheduleJob(job, trigger);
                 result.Code = HttpStatusCode.OK;
             }
@@ -254,7 +248,7 @@ namespace Quartz.SelfHost
             var triggersList = await Scheduler.GetTriggersOfJob(jobKey);
             var triggers = triggersList.AsEnumerable().FirstOrDefault();
             var intervalSeconds = (triggers as SimpleTriggerImpl)?.RepeatInterval.TotalSeconds;
-            entity.RequestUrl = jobDetail.JobDataMap.GetString(Constant.REQUESTURL);
+            entity.RequestUrl = jobDetail.JobDataMap.GetString(Constant.RequestUrl);
             entity.BeginTime = triggers.StartTimeUtc.LocalDateTime;
             entity.EndTime = triggers.EndTimeUtc?.LocalDateTime;
             entity.IntervalSecond = intervalSeconds.HasValue ? Convert.ToInt32(intervalSeconds.Value) : 0;
@@ -263,10 +257,10 @@ namespace Quartz.SelfHost
             entity.Cron = (triggers as CronTriggerImpl)?.CronExpressionString;
             entity.RunTimes = (triggers as SimpleTriggerImpl)?.RepeatCount;
             entity.TriggerType = triggers is SimpleTriggerImpl ? TriggerTypeEnum.Simple : TriggerTypeEnum.Cron;
-            entity.RequestType = (RequestTypeEnum)int.Parse(jobDetail.JobDataMap.GetString(Constant.REQUESTTYPE));
-            entity.RequestParameters = jobDetail.JobDataMap.GetString(Constant.REQUESTPARAMETERS);
-            entity.Headers = jobDetail.JobDataMap.GetString(Constant.HEADERS);
-            entity.MailMessage = (MailMessageEnum)int.Parse(jobDetail.JobDataMap.GetString(Constant.MAILMESSAGE) ?? "0");
+            entity.RequestType = (HttpMethod)int.Parse(jobDetail.JobDataMap.GetString(Constant.RequestType));
+            entity.RequestParameters = jobDetail.JobDataMap.GetString(Constant.RequestParameters);
+            entity.Headers = jobDetail.JobDataMap.GetString(Constant.Headers);
+            entity.MailMessage = (MailMessageEnum)int.Parse(jobDetail.JobDataMap.GetString(Constant.MailMessage) ?? "0");
             entity.Description = jobDetail.Description;
             return entity;
         }
@@ -290,7 +284,7 @@ namespace Quartz.SelfHost
         public async Task<List<string>> GetJobLogsAsync(JobKey jobKey)
         {
             var jobDetail = await Scheduler.GetJobDetail(jobKey);
-            return jobDetail.JobDataMap[Constant.LOGLIST] as List<string>;
+            return jobDetail.JobDataMap[Constant.LogList] as List<string>;
         }
 
         /// <summary>
@@ -326,8 +320,8 @@ namespace Quartz.SelfHost
                         jobInfo.JobInfoList.Add(new JobInfo()
                         {
                             Name = jobKey.Name,
-                            LastErrMsg = jobDetail.JobDataMap.GetString(Constant.EXCEPTION),
-                            RequestUrl = jobDetail.JobDataMap.GetString(Constant.REQUESTURL),
+                            LastErrMsg = jobDetail.JobDataMap.GetString(Constant.Exception),
+                            RequestUrl = jobDetail.JobDataMap.GetString(Constant.RequestUrl),
                             TriggerState = await Scheduler.GetTriggerState(triggers.Key),
                             PreviousFireTime = triggers.GetPreviousFireTimeUtc()?.LocalDateTime,
                             NextFireTime = triggers.GetNextFireTimeUtc()?.LocalDateTime,
@@ -360,7 +354,7 @@ namespace Quartz.SelfHost
 
             var jobKey = new JobKey(jobName, jobGroup);
             var jobDetail = await Scheduler.GetJobDetail(jobKey);
-            jobDetail.JobDataMap[Constant.EXCEPTION] = string.Empty;
+            jobDetail.JobDataMap[Constant.Exception] = string.Empty;
 
             return true;
         }
@@ -392,7 +386,7 @@ namespace Quartz.SelfHost
                         jobInfo.JobInfoList.Add(new JobBriefInfo()
                         {
                             Name = jobKey.Name,
-                            LastErrMsg = jobDetail.JobDataMap.GetString(Constant.EXCEPTION),
+                            LastErrMsg = jobDetail.JobDataMap.GetString(Constant.Exception),
                             TriggerState = await Scheduler.GetTriggerState(triggers.Key),
                             PreviousFireTime = triggers.GetPreviousFireTimeUtc()?.LocalDateTime,
                             NextFireTime = triggers.GetNextFireTimeUtc()?.LocalDateTime,

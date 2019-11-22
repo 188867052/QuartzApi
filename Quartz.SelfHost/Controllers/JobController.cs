@@ -10,7 +10,7 @@ namespace Quartz.SelfHost.Controllers
     /// <summary>
     /// 任务调度
     /// </summary>
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]/[Action]")]
     public class JobController : Controller
     {

@@ -33,19 +33,10 @@ namespace Quartz.Tests
         [Fact]
         public async Task AddJob()
         {
-            string json = "{\"jobGroup\":\"default\",\"jobName\":\"百度\",\"requestUrl\":\"https://www.baidu.com/\",\"beginTime\":\"2019-11-21T06:49:53.129Z\",\"endTime\":\"2019-11-24T06:49:57.142Z\",\"triggerType\":\"2\",\"requestType\":\"1\",\"headers\":null,\"requestParameters\":null,\"description\":null,\"cron\":null,\"intervalSecond\":1,\"mailMessage\":\"0\"}";
+            string json = "{\"jobGroup\":\"default\",\"jobName\":\"百度\",\"requestUrl\":\"https://www.baidu.com/\",\"beginTime\":\"2019-11-21T06:49:53.129Z\",\"endTime\":\"2019-11-24T06:49:57.142Z\",\"triggerType\":\"2\",\"requestType\":\"0\",\"headers\":null,\"requestParameters\":null,\"description\":null,\"cron\":null,\"intervalSecond\":5,\"mailMessage\":\"0\"}";
             ScheduleModel entity = JsonConvert.DeserializeObject<ScheduleModel>(json);
             var scheduler = SchedulerCenter.Instance;
             await scheduler.AddScheduleJobAsync(entity);
-        }
-
-        [Fact]
-        public async Task AddJobByPost()
-        {
-            string json = "{\"jobGroup\":\"default\",\"jobName\":\"百度\",\"requestUrl\":\"https://www.baidu.com/\",\"beginTime\":\"2019-11-21T06:49:53.129Z\",\"endTime\":\"2019-11-24T06:49:57.142Z\",\"triggerType\":\"2\",\"requestType\":\"1\",\"headers\":null,\"requestParameters\":null,\"description\":null,\"cron\":null,\"intervalSecond\":1,\"mailMessage\":\"0\"}";
-            var httpContent = new StringContent(json);
-            var a = client.PostAsync("http://localhost:5000/api/Job/AddJob", httpContent);
-            var b = a.Result.Content.ReadAsStringAsync().Result;
         }
 
         [Fact]
