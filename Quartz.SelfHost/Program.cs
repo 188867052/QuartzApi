@@ -1,13 +1,10 @@
-using System;
 using System.IO;
-using Autofac.Core;
 using Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Quartz.SelfHost.Common;
 using Quartz.SelfHost.Jobs;
-using Topshelf;
 
 namespace Quartz.SelfHost
 {

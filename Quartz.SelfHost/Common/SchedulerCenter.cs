@@ -7,7 +7,6 @@ using EFCore.Scaffolding.Extension;
 using Host;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using Quartz.Impl;
 using Quartz.Impl.AdoJobStore;
 using Quartz.Impl.AdoJobStore.Common;
