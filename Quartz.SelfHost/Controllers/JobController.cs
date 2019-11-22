@@ -30,7 +30,7 @@ namespace Quartz.SelfHost.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<HttpResponseModel> AddJob([FromBody] ScheduleEntity entity)
+        public async Task<HttpResponseModel> AddJob([FromBody] ScheduleModel entity)
         {
             return await scheduler.AddScheduleJobAsync(entity);
         }
@@ -70,7 +70,7 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ScheduleEntity> QueryJob(string name, string group)
+        public async Task<ScheduleModel> QueryJob(string name, string group)
         {
             return await scheduler.QueryJobAsync(group, name);
         }
@@ -81,7 +81,7 @@ namespace Quartz.SelfHost.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<HttpResponseModel> ModifyJob([FromBody]ScheduleEntity entity)
+        public async Task<HttpResponseModel> ModifyJob([FromBody]ScheduleModel entity)
         {
             await scheduler.DeleteJobAsync(new JobKey(entity.JobName, entity.JobGroup));
             await scheduler.AddScheduleJobAsync(entity);
@@ -134,7 +134,7 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<JobInfoEntity>> GetAllJob()
+        public async Task<List<JobInfoModel>> GetAllJob()
         {
             try
             {
@@ -142,8 +142,8 @@ namespace Quartz.SelfHost.Controllers
             }
             catch (System.Exception ex)
             {
-                List<JobInfoEntity> list = new List<JobInfoEntity>();
-                list.Add(new JobInfoEntity { GroupName = ex.Message + ex.StackTrace });
+                List<JobInfoModel> list = new List<JobInfoModel>();
+                list.Add(new JobInfoModel { GroupName = ex.Message + ex.StackTrace });
                 return list;
             }
         }
@@ -153,7 +153,7 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<JobBriefInfoEntity>> GetAllJobBriefInfo()
+        public async Task<List<JobBriefInfoModel>> GetAllJobBriefInfo()
         {
             return await scheduler.GetAllJobBriefInfoAsync();
         }

@@ -4,7 +4,7 @@ using System;
 
 namespace Quartz.SelfHost.Models
 {
-    public class ScheduleEntity
+    public class ScheduleModel
     {
         /// <summary>
         /// 任务名称

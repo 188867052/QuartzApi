@@ -79,7 +79,7 @@ namespace Quartz.SelfHost.Controllers
         /// <param name="model">model.</param>
         /// <returns>JsonResult.</returns>
         [HttpPost]
-        public JsonResult Create(UserCreateModel model)
+        public JsonResult Create(UserModel model)
         {
             if (model.LoginName.Length == 0)
             {

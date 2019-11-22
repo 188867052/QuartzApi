@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Quartz.SelfHost.Models
 {
-    public class JobInfoEntity
+    public class JobInfoModel
     {
         /// <summary>
         /// 任务组名

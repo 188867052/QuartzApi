@@ -1,6 +1,6 @@
 ﻿namespace Quartz.SelfHost.Models
 {
-    public class MailEntity
+    public class MailModel
     {
         /// <summary>
         /// 发件邮箱

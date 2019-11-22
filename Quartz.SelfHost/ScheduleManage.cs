@@ -5,12 +5,12 @@ namespace Quartz.SelfHost
 {
     public class ScheduleManage
     {
-        internal ScheduleEntity GetScheduleModel(string jobGroup, string jobName)
+        internal ScheduleModel GetScheduleModel(string jobGroup, string jobName)
         {
             throw new NotImplementedException();
         }
 
-        internal void UpdateScheduleStatus(ScheduleEntity scheduleModel)
+        internal void UpdateScheduleStatus(ScheduleModel scheduleModel)
         {
             throw new NotImplementedException();
         }

@@ -3,7 +3,7 @@ using Entities;
 
 namespace Quartz.SelfHost.Model
 {
-    public class UserCreateModel
+    public class UserModel
     {
         /// <summary>
         /// 用户名

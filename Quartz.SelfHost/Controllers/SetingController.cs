@@ -17,14 +17,14 @@ namespace Quartz.SelfHost.Controllers
         static string filePath = "File/Mail.txt";
         static string refreshIntervalPath = "File/RefreshInterval.json";
 
-        static MailEntity mailData = null;
+        static MailModel mailData = null;
         /// <summary>
         /// 保存Mail信息
         /// </summary>
         /// <param name="mailEntity"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<bool> SaveMailInfo([FromBody]MailEntity mailEntity)
+        public async Task<bool> SaveMailInfo([FromBody]MailModel mailEntity)
         {
             mailData = mailEntity;
             await System.IO.File.WriteAllTextAsync(filePath, JsonConvert.SerializeObject(mailEntity));
@@ -58,12 +58,12 @@ namespace Quartz.SelfHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<MailEntity> GetMailInfo()
+        public async Task<MailModel> GetMailInfo()
         {
             if (mailData == null)
             {
                 var mail = await System.IO.File.ReadAllTextAsync(filePath);
-                mailData = JsonConvert.DeserializeObject<MailEntity>(mail);
+                mailData = JsonConvert.DeserializeObject<MailModel>(mail);
             }
             return mailData;
         }

@@ -80,7 +80,7 @@ namespace Quartz.SelfHost
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<HttpResponseModel> AddScheduleJobAsync(ScheduleEntity entity)
+        public async Task<HttpResponseModel> AddScheduleJobAsync(ScheduleModel entity)
         {
             var result = new HttpResponseModel();
             try
@@ -245,9 +245,9 @@ namespace Quartz.SelfHost
         /// <param name="jobGroup"></param>
         /// <param name="jobName"></param>
         /// <returns></returns>
-        public async Task<ScheduleEntity> QueryJobAsync(string jobGroup, string jobName)
+        public async Task<ScheduleModel> QueryJobAsync(string jobGroup, string jobName)
         {
-            var entity = new ScheduleEntity();
+            var entity = new ScheduleModel();
             var jobKey = new JobKey(jobName, jobGroup);
             var jobDetail = await Scheduler.GetJobDetail(jobKey);
             var triggersList = await Scheduler.GetTriggersOfJob(jobKey);
@@ -296,15 +296,15 @@ namespace Quartz.SelfHost
         /// 获取所有Job（详情信息 - 初始化页面调用）
         /// </summary>
         /// <returns></returns>
-        public async Task<List<JobInfoEntity>> GetAllJobAsync()
+        public async Task<List<JobInfoModel>> GetAllJobAsync()
         {
             List<JobKey> jboKeyList = new List<JobKey>();
-            List<JobInfoEntity> jobInfoList = new List<JobInfoEntity>();
+            List<JobInfoModel> jobInfoList = new List<JobInfoModel>();
             var groupNames = await Scheduler.GetJobGroupNames();
             foreach (var groupName in groupNames.OrderBy(t => t))
             {
                 jboKeyList.AddRange(await Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)));
-                jobInfoList.Add(new JobInfoEntity() { GroupName = groupName });
+                jobInfoList.Add(new JobInfoModel() { GroupName = groupName });
             }
             foreach (var jobKey in jboKeyList.OrderBy(t => t.Name))
             {
@@ -368,15 +368,15 @@ namespace Quartz.SelfHost
         /// 获取所有Job信息（简要信息 - 刷新数据的时候使用）
         /// </summary>
         /// <returns></returns>
-        public async Task<List<JobBriefInfoEntity>> GetAllJobBriefInfoAsync()
+        public async Task<List<JobBriefInfoModel>> GetAllJobBriefInfoAsync()
         {
             List<JobKey> jboKeyList = new List<JobKey>();
-            List<JobBriefInfoEntity> jobInfoList = new List<JobBriefInfoEntity>();
+            List<JobBriefInfoModel> jobInfoList = new List<JobBriefInfoModel>();
             var groupNames = await Scheduler.GetJobGroupNames();
             foreach (var groupName in groupNames.OrderBy(t => t))
             {
                 jboKeyList.AddRange(await Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(groupName)));
-                jobInfoList.Add(new JobBriefInfoEntity() { GroupName = groupName });
+                jobInfoList.Add(new JobBriefInfoModel() { GroupName = groupName });
             }
             foreach (var jobKey in jboKeyList.OrderBy(t => t.Name))
             {
@@ -438,7 +438,7 @@ namespace Quartz.SelfHost
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        private ITrigger CreateSimpleTrigger(ScheduleEntity entity)
+        private ITrigger CreateSimpleTrigger(ScheduleModel entity)
         {
             //作业触发器
             if (entity.RunTimes.HasValue && entity.RunTimes > 0)
@@ -479,7 +479,7 @@ namespace Quartz.SelfHost
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        private ITrigger CreateCronTrigger(ScheduleEntity entity)
+        private ITrigger CreateCronTrigger(ScheduleModel entity)
         {
             // 作业触发器
             return TriggerBuilder.Create()
