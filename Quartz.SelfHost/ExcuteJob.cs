@@ -14,7 +14,7 @@ using System.Web;
 using Talk.Extensions;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
-namespace Host
+namespace Quartz.SelfHost
 {
     [DisallowConcurrentExecution]
     [PersistJobDataAfterExecution]

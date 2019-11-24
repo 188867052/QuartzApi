@@ -24,7 +24,6 @@ namespace Quartz.SelfHost
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSingleton(SchedulerCenter.Instance);
             services.AddEntityFrameworkSqlServer().AddDbContext<QuartzDbContext>(options =>
@@ -54,6 +53,5 @@ namespace Quartz.SelfHost
 
             SchedulerCenter.Instance.StartScheduleAsync().Wait();
         }
-
     }
 }
