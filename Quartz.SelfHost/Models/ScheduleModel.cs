@@ -57,6 +57,9 @@ namespace Quartz.SelfHost.Models
         /// </summary>
         public bool IsExcuteCmd { get; set; }
 
+        /// <summary>
+        /// Cmd文件路径
+        /// </summary>
         public string CmdPath { get; set; }
 
         /// <summary>

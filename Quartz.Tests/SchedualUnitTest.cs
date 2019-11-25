@@ -2,6 +2,7 @@
 using Quartz.SelfHost.Common;
 using Quartz.SelfHost.Models;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -11,6 +12,7 @@ namespace Quartz.Tests
     public class SchedualUnitTest
     {
         private static readonly HttpClient client = new HttpClient();
+        internal readonly Uri uri = new Uri("http://localhost:6006");
 
         [Fact]
         public async Task stop_job_not_exists_test_async()
@@ -54,6 +56,24 @@ namespace Quartz.Tests
             };
             var scheduler = SchedulerCenter.Instance;
             await scheduler.AddScheduleJobAsync(entity);
+        }
+
+        [Theory]
+        [InlineData("HelloJob", "default")]
+        public void TestStopJob(string name, string group)
+        {
+            var client = new HttpClient() { BaseAddress = uri };
+            var res = client.GetAsync($"/api/Job/StopJob?name={name}&group={group}");
+            Assert.Equal(HttpStatusCode.OK, res.Result.StatusCode);
+        }
+
+        [Theory]
+        [InlineData("HelloJob", "default")]
+        public void TestResumeJob(string name, string group)
+        {
+            var client = new HttpClient() { BaseAddress = uri };
+            var res = client.GetAsync($"/api/Job/ResumeJob?name={name}&group={group}");
+            Assert.Equal(HttpStatusCode.OK, res.Result.StatusCode);
         }
 
         [Fact]
