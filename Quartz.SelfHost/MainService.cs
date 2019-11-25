@@ -89,7 +89,7 @@ namespace Quartz.SelfHost
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var config = new ConfigurationBuilder()
-                            .AddJsonFile("config.json", optional: true, reloadOnChange: true)
+                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                             .Build();
 
             return WebHost.CreateDefaultBuilder(args)
